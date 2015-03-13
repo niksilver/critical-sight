@@ -6,7 +6,8 @@ import play.api.mvc.Controller
 object Application extends Controller {
   
   def index = Action {
-    Ok("It works!")
+    val content = views.html.Application.index("Anything")
+    Ok(content)
   }
 
 }
