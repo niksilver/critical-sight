@@ -1,1 +1,4 @@
-GET  /  controllers.Application.index
+GET  /                controllers.Application.index
+GET  /demo.html       controllers.Assets.at(path = "/public/html", file = "demo.html")
+GET  /public/pixi.js  controllers.Assets.at(path = "/public/javascripts", file = "pixi-v2.2.5.js")
+GET  /public/images/:filename  controllers.Application.image(filename)

@@ -10,4 +10,7 @@ object Application extends Controller {
     Ok(content)
   }
 
+  def image(filename: String) = {
+    controllers.Assets.at(path = "/public/images", file = filename)
+  }
 }

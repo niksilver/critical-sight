@@ -1,0 +1,75 @@
+<html>
+<!--  from http://www.creativebloq.com/netmag/get-started-pixijs-81412778 -->
+<head>
+    <title>pixi.js Example</title>
+    <style>
+		body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+        .rendererView {
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 100%;
+	    }
+    </style>
+    <script src="/public/pixi.js"></script>
+</head>
+<body>
+    <script>
+ 
+    var viewWidth = 600;
+    var viewHeight = 400;
+    var renderer = PIXI.autoDetectRenderer(viewWidth, viewHeight);
+    renderer.view.className = "rendererView";
+    document.body.appendChild(renderer.view);
+    
+    var stage = new PIXI.Stage(0xffffff);
+    
+    var pondFloorTexture = PIXI.Texture.fromImage("/public/images/pond-floor.jpg");
+    var pondFloorSprite = new PIXI.Sprite(pondFloorTexture);
+    stage.addChild(pondFloorSprite);
+    
+    // Create the fish
+    
+    var fishes = [];
+    var numFishes = 20;
+    var fishTexture = PIXI.Texture.fromImage("/public/images/fish1.png");
+    
+    for (var i = 0; i < numFishes; i++) {
+    	var fish = new PIXI.Sprite(fishTexture);
+    	fish.anchor.x = 0.5;
+    	fish.anchor.y = 0.5;
+    	fish.scale.x = 0.3 + (Math.random() * 0.1);
+    	fish.scale.y = 0.3 + (Math.random() * 0.1);
+    	fish.position.x = Math.random() * viewWidth;
+    	fish.position.y = Math.random() * viewHeight;
+    	
+    	// This is our own property
+    	fish.speed = 0.2 + Math.random() * 0.8;
+    	
+    	stage.addChild(fish);
+    	fishes.push(fish);
+    }
+   
+    requestAnimationFrame(animate);
+    
+    var start = null;
+    function animate(timestamp) {
+    	if (!start) { start = timestamp; }
+    	for (var i = 0; i < numFishes; i++) {
+    		var fish = fishes[i];
+    		fish.position.x += (6 * fish.speed);
+    	}
+    	if (timestamp - start < 10000) {
+    		renderer.render(stage);
+    		requestAnimationFrame(animate);
+    	}
+    }
+    
+    </script>
+ 
+    </body>
+</html>
