@@ -36,11 +36,13 @@ var TaskMaker = function(sizer) {
 		return new fabric.Rect({
 			originX : 'left',
 			originY : 'top',
+			stroke: 'rgb(255,0,0)',
+			strokeWidth: 2,
 			left : sizer.left(start),
 			top : sizer.top(idx),
 			height : sizer.height,
 			width : sizer.width(duration),
-			fill : 'rgb(255,0,0)'
+			fill : 'rgba(255,0,0,0.5)'
 		});
 	}
 }
