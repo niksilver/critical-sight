@@ -13,4 +13,8 @@ object Application extends Controller {
   def image(filename: String) = {
     controllers.Assets.at(path = "/public/images", file = filename)
   }
+
+  def javascript(filename: String) = {
+    controllers.Assets.at(path = "/public/javascripts", file = filename)
+  }
 }
