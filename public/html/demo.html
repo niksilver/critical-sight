@@ -1,75 +1,32 @@
 <html>
-<!--  from http://www.creativebloq.com/netmag/get-started-pixijs-81412778 -->
+<!--  from http://htmlcheats.com/fabric-js/fabric-js-tutorial-a-complete-fabric-js-example-beginners-2013/ -->
 <head>
-    <title>pixi.js Example</title>
-    <style>
-		body {
-            margin: 0;
-            padding: 0;
-            background-color: #000000;
-        }
-        .rendererView {
-            position: absolute;
-            display: block;
-            width: 100%;
-            height: 100%;
-	    }
-    </style>
-    <script src="/public/pixi.js"></script>
+    <meta charset="utf-8">
+    <title>fabric.js-simple text display</title>
+    
+	<!-- Get Fabric.js from CDN -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.0/fabric.min.js" ></script>
+ 
+    <!-- Get the jQuery from CDN. Required for ready() function. -->
+    <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
+    
 </head>
 <body>
-    <script>
+
+    <canvas id="c" style="border:1px solid black;" ></canvas>
  
-    var viewWidth = 600;
-    var viewHeight = 400;
-    var renderer = PIXI.autoDetectRenderer(viewWidth, viewHeight);
-    renderer.view.className = "rendererView";
-    document.body.appendChild(renderer.view);
-    
-    var stage = new PIXI.Stage(0xffffff);
-    
-    var pondFloorTexture = PIXI.Texture.fromImage("/public/images/pond-floor.jpg");
-    var pondFloorSprite = new PIXI.Sprite(pondFloorTexture);
-    stage.addChild(pondFloorSprite);
-    
-    // Create the fish
-    
-    var fishes = [];
-    var numFishes = 20;
-    var fishTexture = PIXI.Texture.fromImage("/public/images/fish1.png");
-    
-    for (var i = 0; i < numFishes; i++) {
-    	var fish = new PIXI.Sprite(fishTexture);
-    	fish.anchor.x = 0.5;
-    	fish.anchor.y = 0.5;
-    	fish.scale.x = 0.3 + (Math.random() * 0.1);
-    	fish.scale.y = 0.3 + (Math.random() * 0.1);
-    	fish.position.x = Math.random() * viewWidth;
-    	fish.position.y = Math.random() * viewHeight;
-    	
-    	// This is our own property
-    	fish.speed = 0.2 + Math.random() * 0.8;
-    	
-    	stage.addChild(fish);
-    	fishes.push(fish);
-    }
-   
-    requestAnimationFrame(animate);
-    
-    var start = null;
-    function animate(timestamp) {
-    	if (!start) { start = timestamp; }
-    	for (var i = 0; i < numFishes; i++) {
-    		var fish = fishes[i];
-    		fish.position.x += (6 * fish.speed);
-    	}
-    	if (timestamp - start < 10000) {
-    		renderer.render(stage);
-    		requestAnimationFrame(animate);
-    	}
-    }
-    
-    </script>
- 
-    </body>
+</body>
+<script>
+	$(function() {
+		var canvas = new fabric.Canvas("c");
+		var hi = new fabric.Text('Hello, world!', {
+			left: canvas.getWidth() / 2,
+			top: canvas.getHeight() / 2
+		});
+		// This next option from http://fabricjs.com/customization/
+		// hi.selectable = false;
+		canvas.add(hi);
+	});
+
+</script>
 </html>
