@@ -13,11 +13,17 @@ CriticalSight.Util = {
 	forEachRequireProperty : function(arr, propName, msg) {
 		arr.forEach(function(item) {
 			if (typeof item[propName] === 'undefined') {
-				throw new Error(msg);
+				throw new CriticalSight.BadlyDefinedObjectError(msg);
 			}
 		});
 	}
 };
+
+CriticalSight.UndefinedTaskError = function(message) {
+    this.name = "UndefinedTaskError";
+    this.message = (message || "");
+};
+CriticalSight.UndefinedTaskError.prototype = Error.prototype;
 
 CriticalSight.BadlyDefinedObjectError = function(message) {
     this.name = "BadlyDefinedObjectError";

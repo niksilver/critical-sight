@@ -67,16 +67,16 @@ CriticalSight.Plan = function(spec) {
 	 */
 	(spec.dependencies || []).forEach(function(pair, idx, deps) {
 		if (!Array.isArray(pair)) {
-			throw new CS.BadlyDefinedObjectError("Expected a task ID pair, but found '" + pair + "'");
+			throw new CS.BadlyDefinedObjectError("Expected a task id pair, but found '" + pair + "'");
 		}
 		if (pair.length != 2) {
 			throw new CS.BadlyDefinedObjectError("Dependency " + idx + " needs two elements, found " + pair.length);
 		}
 		if (self.task(pair[0]) === undefined) {
-			throw new Error("Undefined task ID '" + pair[0] + "' among the dependencies");
+			throw new CS.UndefinedTaskError("Undefined task id '" + pair[0] + "' among the dependencies");
 		}
 		if (self.task(pair[1]) === undefined) {
-			throw new Error("Undefined task ID '" + pair[1] + "' among the dependencies");
+			throw new CS.UndefinedTaskError("Undefined task id '" + pair[1] + "' among the dependencies");
 		}
 	});
 	this.dependencyIDs = spec.dependencies || [];

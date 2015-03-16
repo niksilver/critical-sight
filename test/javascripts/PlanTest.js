@@ -38,12 +38,14 @@ describe("Plan", function() {
 		
 		it("should require every task to have an id", function() {
 			var spec = { tasks: [{ notAnId: 't0', start: 1.0, duration: 1.0 }] };
-			expect( function(){ new CS.Plan(spec); } ).toThrow();
+			expect( function(){ new CS.Plan(spec); } ).toThrow(
+					new CS.BadlyDefinedObjectError("Found a task without an id"));
 		});
 		
 		it("should require every task to have a start", function() {
 			var spec = { tasks: [{ id: 't0', notAStart: 1.0, duration: 1.0 }] };
-			expect( function(){ new CS.Plan(spec); } ).toThrow();
+			expect( function(){ new CS.Plan(spec); } ).toThrow(
+					new CS.BadlyDefinedObjectError("Found a task without a start"));
 		});
 		
 		it("should allow a start of 0.0", function() {
@@ -54,7 +56,8 @@ describe("Plan", function() {
 		
 		it("should require every task to have a duration", function() {
 			var spec = { tasks: [{ id: 't0', start: 1.0, notADuration: 3.0 }] };
-			expect( function(){ new CS.Plan(spec); } ).toThrow();
+			expect( function(){ new CS.Plan(spec); } ).toThrow(
+					new CS.BadlyDefinedObjectError("Found a task without a duration"));
 		});
 	});
 	
@@ -168,22 +171,24 @@ describe("Plan", function() {
 			expect( p.dependencyIDs[0] ).toEqual( ['t0', 't1'] );
 		});
 		
-		it("should give an error if some first dependency ID is not a task ID", function() {
+		it("should give an error if some first dependency id is not a task ID", function() {
 			var t0 = { id: 't0', start: 1.0, duration: 3.0 };
 			var t1 = { id: 't1', start: 3.0, duration: 2.0 };
 			var t2 = { id: 't2', start: 5.0, duration: 2.0 };
 			var t3 = { id: 't3', start: 7.0, duration: 2.0 };
 			var spec = { tasks: [t0, t1, t2], dependencies: [['t0', 't1'], ['t3', 't2']] };
-			expect( function(){ new CS.Plan(spec); } ).toThrow();
+			expect( function(){ new CS.Plan(spec); } ).toThrow(
+					new CS.UndefinedTaskError("Undefined task id 't3' among the dependencies"));
 		});
 		
-		it("should give an error if some second dependency ID is not a task ID", function() {
+		it("should give an error if some second dependency id is not a task ID", function() {
 			var t0 = { id: 't0', start: 1.0, duration: 3.0 };
 			var t1 = { id: 't1', start: 3.0, duration: 2.0 };
 			var t2 = { id: 't2', start: 5.0, duration: 2.0 };
-			var t3 = { id: 't3', start: 7.0, duration: 2.0 };
-			var spec = { tasks: [t0, t1, t2], dependencies: [['t0', 't1'], ['t2', 't3']] };
-			expect( function(){ new CS.Plan(spec); } ).toThrow();
+			var t4 = { id: 't4', start: 7.0, duration: 2.0 };
+			var spec = { tasks: [t0, t1, t2], dependencies: [['t0', 't1'], ['t2', 't4']] };
+			expect( function(){ new CS.Plan(spec); } ).toThrow(
+					new CS.UndefinedTaskError("Undefined task id 't4' among the dependencies"));
 		});
 		
 		it("should give an error if some so-called pair is not an array", function() {
@@ -191,7 +196,7 @@ describe("Plan", function() {
 			var t1 = { id: 't1', start: 3.0, duration: 2.0 };
 			var spec = { tasks: [t0, t1], dependencies: [['t0', 't1'], 'Hello!'] };
 			expect( function(){ new CS.Plan(spec); } ).toThrow(
-					new CS.BadlyDefinedObjectError("Expected a task ID pair, but found 'Hello!'"));
+					new CS.BadlyDefinedObjectError("Expected a task id pair, but found 'Hello!'"));
 		});
 		
 		it("should give an error if some so-called pair doesn't have two elements (1)", function() {
