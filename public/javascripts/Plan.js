@@ -44,4 +44,9 @@ CriticalSight.Plan = function(spec) {
 		return (prev.end >= curr.end) ? prev : curr;
 	};
 	this.end = (this.taskList.length === 0) ? undefined : this.taskList.reduce(endFn).end;
+	
+	/**
+	 * The time between the plan start and end
+	 */
+	this.duration = (this.taskList.length === 0) ? undefined : (this.end - this.start);
 };

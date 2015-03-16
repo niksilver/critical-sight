@@ -28,10 +28,9 @@ CriticalSight.DemoChart = {
 		};
 
 		var plan = new CS.Plan(taskSpec);
-		var planDuration = plan.end - plan.start;
 		
 		var htmlCanvasWidth = canvas.getElement().width;
-		var sizer = new CS.Sizer(20, htmlCanvasWidth / planDuration);
+		var sizer = new CS.Sizer(20, htmlCanvasWidth / plan.duration);
 		var tMaker = new CS.TaskMaker(sizer);
 
 		for (var i = 0; i < plan.taskList.length; i++) {

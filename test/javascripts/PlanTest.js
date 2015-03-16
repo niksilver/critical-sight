@@ -106,4 +106,27 @@ describe("Plan", function() {
 			expect( p.end ).toEqual( 3.5 + 1.5 );
 		});
 	});
+	
+	describe("duration", function() {
+		
+		it("should be undefined if there are no tasks", function() {
+			var spec = { tasks: [] };
+			var p = new CS.Plan(spec);
+			expect( p.duration ).toBeUndefined();
+		});
+
+		it("should give correct duration if one task", function() {
+			var spec = { tasks: [{ id: 't0', start: 1.0, duration: 3.0 }] };
+			var p = new CS.Plan(spec);
+			expect( p.duration ).toEqual( 3.0 );
+		});
+
+		it("should give correct duration if two tasks", function() {
+			var spec = { tasks: [
+			                     { id: 't0', start: 2.0, duration: 3.0 },
+			                     { id: 't1', start: 3.5, duration: 1.5 }] };
+			var p = new CS.Plan(spec);
+			expect( p.duration ).toEqual( (3.5 + 1.5) - 2.0 );
+		});
+	});
 });
