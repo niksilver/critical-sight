@@ -13,22 +13,22 @@ var Sizer = function(unitHeight, unitWidth) {
 	 */
 	this.top = function(idx) {
 		return (this.height + this.midPadding) * idx + this.topPadding;
-	}
+	};
 
 	/**
 	 * Left of a task rectangle, where the start is at time `start`.
 	 */
 	this.left = function(start) {
 		return start * this.unitWidth;
-	}
+	};
 
 	/**
 	 * Width of a task rectangle, where the task's duration is `dur`.
 	 */
 	this.width = function(dur) {
 		return dur * this.unitWidth;
-	}
-}
+	};
+};
 
 var TaskMaker = function(sizer) {
 	this.sizer = sizer;
@@ -44,5 +44,5 @@ var TaskMaker = function(sizer) {
 			width : sizer.width(duration),
 			fill : 'rgba(255,0,0,0.5)'
 		});
-	}
-}
+	};
+};
