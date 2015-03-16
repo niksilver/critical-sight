@@ -20,30 +20,18 @@
 
 <!-- Our own code -->
 <script src="/public/javascripts/gantt.js"></script>
+<script src="/public/javascripts/DemoChart.js"></script>
 
 <script>
-
 	$(function() {
-		
+
 		var htmlCanvas = document.getElementById('c');
 		htmlCanvas.width = 1000;
 		htmlCanvas.height = 500;
-		
+
 		var canvas = new fabric.Canvas("c");
 
-		// This next option from http://fabricjs.com/customization/
-		// hi.selectable = false;
-
-		var sizer = new Sizer(20, 50);
-		var tMaker = new TaskMaker(sizer);
-		
-		for (var i = 0; i < 10; i++) {
-			var start = i;
-			var duration = i+2;
-			var rect = tMaker.taskRect(i, start, duration);
-			canvas.add(rect);
-		}
-
+		DemoChart.run(canvas);
 	});
 </script>
 </html>

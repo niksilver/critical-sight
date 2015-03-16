@@ -63,6 +63,14 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
+    singleRun: false,
+    
+    // Specific options for jshint. See
+    // http://jshint.com/docs/options/
+    
+    jshint: {
+    	strict: true
+    }
+    
   });
 };
