@@ -9,9 +9,9 @@ describe("Plan", function() {
 	describe("taskList", function() {
 		
 		it("should contain the 0th task given a non-empty spec", function() {
-			var spec = { tasks: [{ id: 't0' }] };
+			var spec = { tasks: [{ id: 't0', start: 1.0 }] };
 			var p = new CS.Plan(spec);
-			expect( p.taskList[0] ).toEqual( { id: 't0' } );
+			expect( p.taskList[0].id ).toEqual( 't0' );
 		});
 		
 		it("should throw an error if there are no tasks in the spec", function() {
@@ -30,6 +30,11 @@ describe("Plan", function() {
 		
 		it("should throw an error if a task does not have an id", function() {
 			var spec = { tasks: [{ notAnId: 't0' }] };
+			expect( function(){ new CS.Plan(spec); } ).toThrow();
+		});
+		
+		it("should throw an error if a task does not have a start", function() {
+			var spec = { tasks: [{ id: 't0', notAStart: 1.0 }] };
 			expect( function(){ new CS.Plan(spec); } ).toThrow();
 		});
 	});
