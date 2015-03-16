@@ -1,0 +1,15 @@
+{
+  "name": "criticalsight",
+  "description": "Front-end for critical chain application",
+  "repository": {
+    "type": "jgit",
+    "url": "amazon-s3://.jgit@niksilver.git/criticalsight.git"
+  },
+  "devDependencies": {
+    "jasmine-core": "^2.2.0",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-firefox-launcher": "^0.1.4",
+    "karma-jasmine": "^0.3.5"
+  }
+}
