@@ -16,8 +16,8 @@ CriticalSight.Plan = function(spec) {
 		throw new Error("No tasks property found");
 	}
 	Util.forEachRequireProperty(spec.tasks, 'id', "Found a task without an id");
-	Util.forEachRequireProperty(spec.tasks, 'start',
-			"Found a task without a start");
+	Util.forEachRequireProperty(spec.tasks, 'start', "Found a task without a start");
+	Util.forEachRequireProperty(spec.tasks, 'duration', "Found a task without a duration");
 	this.taskList = spec.tasks;
 
 };
