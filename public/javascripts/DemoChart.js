@@ -4,9 +4,11 @@
 
 CriticalSight.DemoChart = {
 	"run" : function(canvas) {
+		
+		var CS = CriticalSight;
 
-		var sizer = new Sizer(20, 50);
-		var tMaker = new TaskMaker(sizer);
+		var sizer = new CS.Sizer(20, 50);
+		var tMaker = new CS.TaskMaker(sizer);
 
 		var taskSpec = {
 			tasks : [ {
@@ -17,6 +19,14 @@ CriticalSight.DemoChart = {
 				id : 't2',
 				start : 3,
 				duration : 5
+			}, {
+				id : 't3',
+				start : 1,
+				duration : 1
+			}, {
+				id : 't4',
+				start : 2,
+				duration : 1.5
 			} ]
 		};
 

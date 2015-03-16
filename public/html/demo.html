@@ -24,6 +24,8 @@
 <script src="/public/javascripts/DemoChart.js"></script>
 
 <script>
+	var CS = CriticalSight;
+	
 	$(function() {
 
 		var htmlCanvas = document.getElementById('c');
@@ -32,7 +34,7 @@
 
 		var canvas = new fabric.Canvas("c");
 
-		DemoChart.run(canvas);
+		CS.DemoChart.run(canvas);
 	});
 </script>
 </html>
