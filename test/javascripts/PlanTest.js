@@ -92,7 +92,7 @@ describe("Plan", function() {
 
 		it("should give the latest task end as the plan end (2 - to avoid faking)", function() {
 			var spec = { tasks: [
-			                     { id: 't0', start: 2.0, duration: 3.0 },
+			                     { id: 't0', start: 2.0, duration: 2.0 },
 			                     { id: 't1', start: 1.0, duration: 4.0 }] };
 			var p = new CS.Plan(spec);
 			expect( p.end ).toEqual( 1.0 + 4.0 );
