@@ -1,5 +1,5 @@
 /**
- * Tests for the Plan prototype.
+ * Tests for the Plan class.
  */
 
 describe("Plan", function() {

@@ -1,9 +1,11 @@
 /**
- * A collection of related tasks. The spec needs the following properties: -
- * tasks. An array of tasks (see below).
+ * A collection of related tasks. The spec needs the following properties:
+ * - tasks. An array of tasks (see below).
  * 
- * Each task must be an object with the following properties: - id. A simple
- * string. - start. A numeric. - duration. A numeric.
+ * Each task must be an object with the following properties:
+ * - id. A simple string.
+ * - start. A numeric.
+ * - duration. A numeric.
  */
 
 CriticalSight.Plan = function(spec) {
