@@ -11,6 +11,8 @@
 CriticalSight.Plan = function(spec) {
 	'use strict';
 
+	var self = this;
+	var CS = CriticalSight;
 	var Util = CriticalSight.Util;
 
 	// Create the taskList
@@ -51,7 +53,7 @@ CriticalSight.Plan = function(spec) {
 	this.duration = (this.taskList.length === 0) ? undefined : (this.end - this.start);
 	
 	/**
-	 * Get a task by its id
+	 * Get a task by its id, or undefined if it's not specified
 	 */
 	this.task = function(id) {
 		for (var i = 0; i < this.taskList.length; i++) {
@@ -59,4 +61,23 @@ CriticalSight.Plan = function(spec) {
 			if (task.id === id) { return task; }
 		}
 	};
+	
+	/**
+	 * An array of dependencies, referenced by task id only
+	 */
+	(spec.dependencies || []).forEach(function(pair, idx, deps) {
+		if (!Array.isArray(pair)) {
+			throw new CS.BadlyDefinedObjectError("Expected a task ID pair, but found '" + pair + "'");
+		}
+		if (pair.length != 2) {
+			throw new CS.BadlyDefinedObjectError("Dependency " + idx + " needs two elements, found " + pair.length);
+		}
+		if (self.task(pair[0]) === undefined) {
+			throw new Error("Undefined task ID '" + pair[0] + "' among the dependencies");
+		}
+		if (self.task(pair[1]) === undefined) {
+			throw new Error("Undefined task ID '" + pair[1] + "' among the dependencies");
+		}
+	});
+	this.dependencyIDs = spec.dependencies || [];
 };

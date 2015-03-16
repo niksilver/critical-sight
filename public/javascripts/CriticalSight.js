@@ -1,5 +1,6 @@
 /**
- * Top level container for our Critical Sight Javascript code
+ * Top level container for our Critical Sight Javascript code,
+ * plus sundry definitions.
  */
 
 var CriticalSight = {};
@@ -17,3 +18,9 @@ CriticalSight.Util = {
 		});
 	}
 };
+
+CriticalSight.BadlyDefinedObjectError = function(message) {
+    this.name = "BadlyDefinedObjectError";
+    this.message = (message || "");
+};
+CriticalSight.BadlyDefinedObjectError.prototype = Error.prototype;

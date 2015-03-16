@@ -6,7 +6,7 @@ describe("Plan", function() {
 	
 	var CS = CriticalSight;
 	
-	describe("contructor", function() {
+	describe("constructor", function() {
 		
 		it("should throw an error if there are no tasks in the spec", function() {
 			expect( function(){ new CS.Plan({}); } ).toThrow();
@@ -14,6 +14,11 @@ describe("Plan", function() {
 		
 		it("should throw an error if no argument is given", function() {
 			expect( function(){ new CS.Plan(); } ).toThrow();
+		});
+		
+		it("should be okay if there are no dependencies", function() {
+			var spec = { tasks: [] };
+			new CS.Plan(spec);
 		});
 	});
 	
@@ -144,6 +149,69 @@ describe("Plan", function() {
 			var spec = { tasks: [t0] };
 			var p = new CS.Plan(spec);
 			expect( p.task('tNothing') ).toBeUndefined();
+		});
+	});
+	
+	describe("dependencyIDs", function() {
+		
+		it("should give an empty dependency IDs array if no dependencies specified", function() {
+			var spec = { tasks: [] };
+			var p = new CS.Plan(spec);
+			expect( p.dependencyIDs ).toEqual( [] );
+		});
+		
+		it("should give a non-empty dependency IDs array if some dependencies specified", function() {
+			var t0 = { id: 't0', start: 1.0, duration: 3.0 };
+			var t1 = { id: 't1', start: 3.0, duration: 2.0 };
+			var spec = { tasks: [t0, t1], dependencies: [['t0', 't1']] };
+			var p = new CS.Plan(spec);
+			expect( p.dependencyIDs[0] ).toEqual( ['t0', 't1'] );
+		});
+		
+		it("should give an error if some first dependency ID is not a task ID", function() {
+			var t0 = { id: 't0', start: 1.0, duration: 3.0 };
+			var t1 = { id: 't1', start: 3.0, duration: 2.0 };
+			var t2 = { id: 't2', start: 5.0, duration: 2.0 };
+			var t3 = { id: 't3', start: 7.0, duration: 2.0 };
+			var spec = { tasks: [t0, t1, t2], dependencies: [['t0', 't1'], ['t3', 't2']] };
+			expect( function(){ new CS.Plan(spec); } ).toThrow();
+		});
+		
+		it("should give an error if some second dependency ID is not a task ID", function() {
+			var t0 = { id: 't0', start: 1.0, duration: 3.0 };
+			var t1 = { id: 't1', start: 3.0, duration: 2.0 };
+			var t2 = { id: 't2', start: 5.0, duration: 2.0 };
+			var t3 = { id: 't3', start: 7.0, duration: 2.0 };
+			var spec = { tasks: [t0, t1, t2], dependencies: [['t0', 't1'], ['t2', 't3']] };
+			expect( function(){ new CS.Plan(spec); } ).toThrow();
+		});
+		
+		it("should give an error if some so-called pair is not an array", function() {
+			var t0 = { id: 't0', start: 1.0, duration: 3.0 };
+			var t1 = { id: 't1', start: 3.0, duration: 2.0 };
+			var spec = { tasks: [t0, t1], dependencies: [['t0', 't1'], 'Hello!'] };
+			expect( function(){ new CS.Plan(spec); } ).toThrow(
+					new CS.BadlyDefinedObjectError("Expected a task ID pair, but found 'Hello!'"));
+		});
+		
+		it("should give an error if some so-called pair doesn't have two elements (1)", function() {
+			var t0 = { id: 't0', start: 1.0, duration: 3.0 };
+			var t1 = { id: 't1', start: 3.0, duration: 2.0 };
+			var t2 = { id: 't2', start: 5.0, duration: 2.0 };
+			var spec = { tasks: [t0, t1], dependencies: [['t0', 't1', 't2']] };
+			expect( function(){ new CS.Plan(spec); } ).toThrow(
+					new CS.BadlyDefinedObjectError("Dependency 0 needs two elements, found 3"));
+		});
+		
+		it("should give an error if some so-called pair doesn't have two elements (2 - to avoid faking)", function() {
+			var t0 = { id: 't0', start: 1.0, duration: 3.0 };
+			var t1 = { id: 't1', start: 3.0, duration: 2.0 };
+			var t2 = { id: 't2', start: 5.0, duration: 2.0 };
+			var t3 = { id: 't3', start: 7.0, duration: 2.0 };
+			var spec = { tasks: [t0, t1, t2, t3],
+					dependencies: [['t0', 't1'], ['t0', 't2'], ['t3']] };
+			expect( function(){ new CS.Plan(spec); } ).toThrow(
+					new CS.BadlyDefinedObjectError("Dependency 2 needs two elements, found 1"));
 		});
 	});
 });
