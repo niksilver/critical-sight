@@ -52,4 +52,27 @@ describe("Plan", function() {
 			expect( function(){ new CS.Plan(spec); } ).toThrow();
 		});
 	});
+	
+	describe("start", function() {
+		
+		it("should be undefined if there are no tasks", function() {
+			var spec = { tasks: [] };
+			var p = new CS.Plan(spec);
+			expect( p.start ).toBeUndefined();
+		});
+
+		it("should give the earliest task start as the plan start (1)", function() {
+			var spec = { tasks: [{ id: 't0', start: 1.0, duration: 3.0 }] };
+			var p = new CS.Plan(spec);
+			expect( p.start ).toEqual( 1.0 );
+		});
+
+		it("should give the earliest task start as the plan start (2 - to avoid faking)", function() {
+			var spec = { tasks: [
+			                     { id: 't0', start: 2.0, duration: 3.0 },
+			                     { id: 't1', start: 0.0, duration: 3.0 }] };
+			var p = new CS.Plan(spec);
+			expect( p.start ).toEqual( 0.0 );
+		});
+	});
 });
