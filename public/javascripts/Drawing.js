@@ -37,8 +37,8 @@ CriticalSight.TaskMaker = function(sizer) {
 	
 	this.sizer = sizer;
 	
-	var taskLineColour = 'rgb(255,0,0)';
-	var taskFillColour = 'rgba(255,0,0,0.5)';
+	var taskStrokeColour = 'rgb(0,0,255)';
+	var taskFillColour = 'rgb(128,128,255)';
 	var taskStrokeWidth = 2;
 	
 	/**
@@ -70,7 +70,7 @@ CriticalSight.TaskMaker = function(sizer) {
 			left : sizer.left(start),
 			top : sizer.top(idx),
 			fill: taskFillColour,
-			stroke: taskLineColour,
+			stroke: taskStrokeColour,
 			strokeWidth: taskStrokeWidth
 		});
 		return diamond;
@@ -83,7 +83,7 @@ CriticalSight.TaskMaker = function(sizer) {
 		return new fabric.Rect({
 			originX : 'left',
 			originY : 'top',
-			stroke: taskLineColour,
+			stroke: taskStrokeColour,
 			strokeWidth: taskStrokeWidth,
 			left : sizer.left(start),
 			top : sizer.top(idx),
