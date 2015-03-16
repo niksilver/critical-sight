@@ -20,15 +20,26 @@ CriticalSight.Plan = function(spec) {
 	Util.forEachRequireProperty(spec.tasks, 'duration', "Found a task without a duration");
 	
 	/**
-	 * The array of tasks.
+	 * The array of tasks, with an end property for each one.
 	 */
-	this.taskList = spec.tasks;
+	this.taskList = spec.tasks.map(function(curr, idx, arr) {
+		curr.end = curr.start + curr.duration;
+		return curr;
+	});
 
 	/**
 	 * The start of the earliest task, or undefined if there are no tasks.
 	 */
-	var minTask = function(prev, curr, index, arr) {
+	var startFn = function(prev, curr, index, arr) {
 		return (prev.start <= curr.start) ? prev : curr;
 	};
-	this.start = (this.taskList.length === 0) ? undefined : this.taskList.reduce(minTask).start;
+	this.start = (this.taskList.length === 0) ? undefined : this.taskList.reduce(startFn).start;
+
+	/**
+	 * The end of the latest task, or undefined if there are no tasks.
+	 */
+	var endFn = function(prev, curr, index, arr) {
+		return (prev.end >= curr.end) ? prev : curr;
+	};
+	this.end = (this.taskList.length === 0) ? undefined : this.taskList.reduce(startFn).end;
 };
