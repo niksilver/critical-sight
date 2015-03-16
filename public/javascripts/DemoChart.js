@@ -7,9 +7,6 @@ CriticalSight.DemoChart = {
 		
 		var CS = CriticalSight;
 
-		var sizer = new CS.Sizer(20, 50);
-		var tMaker = new CS.TaskMaker(sizer);
-
 		var taskSpec = {
 			tasks : [ {
 				id : 't1',
@@ -30,8 +27,15 @@ CriticalSight.DemoChart = {
 			} ]
 		};
 
-		for (var i = 0; i < taskSpec.tasks.length; i++) {
-			var task = taskSpec.tasks[i];
+		var plan = new CS.Plan(taskSpec);
+		var planDuration = plan.end - plan.start;
+		
+		var htmlCanvasWidth = canvas.getElement().width;
+		var sizer = new CS.Sizer(20, htmlCanvasWidth / planDuration);
+		var tMaker = new CS.TaskMaker(sizer);
+
+		for (var i = 0; i < plan.taskList.length; i++) {
+			var task = plan.taskList[i];
 			var start = task.start;
 			var duration = task.duration;
 			var rect = tMaker.taskRect(i, start, duration);

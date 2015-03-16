@@ -43,5 +43,5 @@ CriticalSight.Plan = function(spec) {
 	var endFn = function(prev, curr, index, arr) {
 		return (prev.end >= curr.end) ? prev : curr;
 	};
-	this.end = (this.taskList.length === 0) ? undefined : this.taskList.reduce(startFn).end;
+	this.end = (this.taskList.length === 0) ? undefined : this.taskList.reduce(endFn).end;
 };

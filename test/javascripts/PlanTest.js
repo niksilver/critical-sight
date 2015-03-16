@@ -97,5 +97,13 @@ describe("Plan", function() {
 			var p = new CS.Plan(spec);
 			expect( p.end ).toEqual( 1.0 + 4.0 );
 		});
+
+		it("should give the latest task end when it's also not the earliest task", function() {
+			var spec = { tasks: [
+			                     { id: 't0', start: 2.0, duration: 2.0 },
+			                     { id: 't1', start: 3.5, duration: 1.5 }] };
+			var p = new CS.Plan(spec);
+			expect( p.end ).toEqual( 3.5 + 1.5 );
+		});
 	});
 });
