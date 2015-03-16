@@ -24,6 +24,10 @@ CriticalSight.DemoChart = {
 				id : 't4',
 				start : 2,
 				duration : 1.5
+			}, {
+				id : 't5',
+				start : 2,
+				duration : 0
 			} ]
 		};
 
@@ -37,8 +41,8 @@ CriticalSight.DemoChart = {
 			var task = plan.taskList[i];
 			var start = task.start;
 			var duration = task.duration;
-			var rect = tMaker.taskRect(i, start, duration);
-			canvas.add(rect);
+			var taskShape = tMaker.taskShape(i, start, duration);
+			canvas.add(taskShape);
 		}
 	}
 };
