@@ -11,7 +11,7 @@ CriticalSight.Util = {
 	 */
 	forEachRequireProperty : function(arr, propName, msg) {
 		arr.forEach(function(item) {
-			if (!item[propName]) {
+			if (typeof item[propName] === 'undefined') {
 				throw new Error(msg);
 			}
 		});

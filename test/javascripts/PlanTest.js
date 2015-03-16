@@ -28,14 +28,20 @@ describe("Plan", function() {
 			expect( p.taskList.length ).toEqual( 0 );
 		});
 		
-		it("should throw an error if a task does not have an id", function() {
+		it("should require every task to have an id", function() {
 			var spec = { tasks: [{ notAnId: 't0' }] };
 			expect( function(){ new CS.Plan(spec); } ).toThrow();
 		});
 		
-		it("should throw an error if a task does not have a start", function() {
+		it("should require every task to have a start", function() {
 			var spec = { tasks: [{ id: 't0', notAStart: 1.0 }] };
 			expect( function(){ new CS.Plan(spec); } ).toThrow();
+		});
+		
+		it("should allow a start of 0.0", function() {
+			var spec = { tasks: [{ id: 't0', start: 0.0 }] };
+			var p = new CS.Plan(spec);
+			expect( p.taskList[0].start ).toEqual( 0.0 );
 		});
 	});
 });
