@@ -2,7 +2,7 @@
  * Demo of a Gantt chart
  */
 
-var DemoChart = {
+CriticalSight.DemoChart = {
 	"run" : function(canvas) {
 
 		var sizer = new Sizer(20, 50);

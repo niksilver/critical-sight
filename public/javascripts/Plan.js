@@ -9,7 +9,7 @@
  *   - duration. A numeric.
  */
 
-var Plan = function(spec) {
+CriticalSight.Plan = function(spec) {
 	'use strict';
 	
 	// Create the taskList

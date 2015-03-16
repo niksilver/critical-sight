@@ -2,7 +2,7 @@
  * Tools for building a Gantt chart.
  */
 
-var Sizer = function(unitHeight, unitWidth) {
+CriticalSight.Sizer = function(unitHeight, unitWidth) {
 	'use strict';
 	
 	this.topPadding = unitHeight * 0.5;
@@ -32,7 +32,7 @@ var Sizer = function(unitHeight, unitWidth) {
 	};
 };
 
-var TaskMaker = function(sizer) {
+CriticalSight.TaskMaker = function(sizer) {
 	'use strict';
 	
 	this.sizer = sizer;
