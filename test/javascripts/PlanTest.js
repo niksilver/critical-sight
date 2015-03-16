@@ -129,4 +129,21 @@ describe("Plan", function() {
 			expect( p.duration ).toEqual( (3.5 + 1.5) - 2.0 );
 		});
 	});
+	
+	describe("task", function() {
+		
+		it("should reference a task by its id", function() {
+			var t0 = { id: 't0', start: 1.0, duration: 3.0 };
+			var spec = { tasks: [t0] };
+			var p = new CS.Plan(spec);
+			expect( p.task('t0') ).toEqual( t0 );
+		});
+		
+		it("should return undefined if no such id", function() {
+			var t0 = { id: 't0', start: 1.0, duration: 3.0 };
+			var spec = { tasks: [t0] };
+			var p = new CS.Plan(spec);
+			expect( p.task('tNothing') ).toBeUndefined();
+		});
+	});
 });

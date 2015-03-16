@@ -49,4 +49,14 @@ CriticalSight.Plan = function(spec) {
 	 * The time between the plan start and end
 	 */
 	this.duration = (this.taskList.length === 0) ? undefined : (this.end - this.start);
+	
+	/**
+	 * Get a task by its id
+	 */
+	this.task = function(id) {
+		for (var i = 0; i < this.taskList.length; i++) {
+			var task = this.taskList[i];
+			if (task.id === id) { return task; }
+		}
+	};
 };
