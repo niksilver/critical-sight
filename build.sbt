@@ -21,17 +21,10 @@ unmanagedJars in Compile += ( baseDirectory.value / "target/scala-2.11/classes_m
 // https://www.playframework.com/documentation/2.3.8/Build
 //
 libraryDependencies ++= Seq(
-    // Removed for the moment
-    // jdbc,
-    // anorm,
-    // cache
+    jdbc,
+    anorm,
+    cache
 )
-
-// For Scalatest for Scala 2.11
-// libraryDependencies += "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test"
-
-// For ScalaMock
-// libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.2" % "test"
 
 
 // This adds ScalaTest+Play. See
@@ -39,7 +32,4 @@ libraryDependencies ++= Seq(
 // and for the right version see
 // http://www.scalatest.org/plus/play/versions
 //
-libraryDependencies ++= Seq(
-  // Add your project dependencies here,
-  "org.scalatestplus" %% "play" % "1.2.0" % "test"
-)
+libraryDependencies += "org.scalatestplus" %% "play" % "1.2.0" % "test"
