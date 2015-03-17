@@ -10,6 +10,13 @@ scalacOptions ++=
 	Seq("-deprecation", "-feature",
 		"-language:implicitConversions")
 
+// Use this to include classes_managed in Eclipse's library dependencies.
+// Otherwise it will give a compile error for classes like
+// views.html.Application
+// which are generated from the views directory.
+//
+unmanagedJars in Compile += ( baseDirectory.value / "target/scala-2.11/classes_managed" )
+
 libraryDependencies ++= Seq(
 )
 
