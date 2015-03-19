@@ -5,6 +5,8 @@ import play.api.mvc.Controller
 import org.pigsaw.ccpm.Task
 import org.pigsaw.ccpm.Plan
 import play.api.libs.json.Json
+import org.pigsaw.ccpm.ScriptedPlan
+import play.api.libs.json.JsObject
 
 trait Application {
   this: Controller =>
@@ -35,6 +37,10 @@ trait Application {
         "tasks": [{ "id": "t0", "start": 0, "duration": 0 }]
       }""")
     Ok(jsonPlan)
+  }
+  
+  def jsonPlan(p: Plan): JsObject = {
+    Json.obj("tasks" -> Json.arr(Json.obj("id" -> "t0")))
   }
 }
 
