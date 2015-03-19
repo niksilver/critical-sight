@@ -40,10 +40,12 @@ trait Application {
   }
   
   def jsonPlan(p: Plan): JsObject = {
+    val sch = p.schedule
     implicit val taskWrites = new Writes[Task] {
       def writes(t: Task) = Json.obj(
           "id" -> t.id.name,
-          "duration" -> t.duration)
+          "duration" -> t.duration,
+          "start" -> sch.start(t))
     }
     Json.obj("tasks" -> Json.toJson(p.tasks))
   }
