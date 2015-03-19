@@ -2,9 +2,13 @@ package controllers
 
 import play.api.mvc.Action
 import play.api.mvc.Controller
+import org.pigsaw.ccpm.Task
+import org.pigsaw.ccpm.Plan
+import play.api.libs.json.Json
 
-object Application extends Controller {
-  
+trait Application {
+  this: Controller =>
+
   def index = Action {
     val content = views.html.Application.index("Anything")
     Ok(content)
@@ -17,4 +21,21 @@ object Application extends Controller {
   def javascript(filename: String) = {
     controllers.Assets.at(path = "/public/javascripts", file = filename)
   }
+
+  def sample = Action {
+    val t0 = Task('t0)
+    val t1 = Task('t1, "Write a long list", 2.0, None)
+    val t2 = Task('t2, "Do what's on the list", 5.0, None)
+    val t3 = Task('t3)
+    val p = new Plan {
+      val tasks = Set(t0, t1, t2, t3)
+      val dependencies = Set(t0 -> t1, t1 -> t2, t2 -> t3)
+    }
+    val jsonPlan = Json.parse("""{
+        "tasks": [{ "id": "t0", "start": 0, "duration": 0 }]
+      }""")
+    Ok(jsonPlan)
+  }
 }
+
+object Application extends Application with Controller
