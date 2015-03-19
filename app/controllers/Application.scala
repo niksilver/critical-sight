@@ -6,7 +6,7 @@ import org.pigsaw.ccpm.Task
 import org.pigsaw.ccpm.Plan
 import play.api.libs.json.Json
 import org.pigsaw.ccpm.ScriptedPlan
-import play.api.libs.json.JsObject
+import play.api.libs.json._
 
 trait Application {
   this: Controller =>
@@ -40,7 +40,10 @@ trait Application {
   }
   
   def jsonPlan(p: Plan): JsObject = {
-    Json.obj("tasks" -> Json.arr(Json.obj("id" -> "t0")))
+    implicit val taskWrites = new Writes[Task] {
+      def writes(t: Task) = Json.obj("id" -> t.id.name)
+    }
+    Json.obj("tasks" -> Json.toJson(p.tasks))
   }
 }
 

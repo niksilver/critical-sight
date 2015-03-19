@@ -39,7 +39,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
 
   "Application.plan" must {
     
-    "be able to generate a one-task plan" in {
+    "be able to generate a one-task plan - id only (1)" in {
       val p = new ScriptedPlan {
         add task 't0
       }
@@ -50,6 +50,34 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val tasksSeq = tasksArray.value
       tasksSeq.length must equal (1)
       (tasksSeq(0) \ "id").as[String] must equal ("t0")
+    }
+    
+    "be able to generate a one-task plan - id only (2 - to avoid faking)" in {
+      val p = new ScriptedPlan {
+        add task 't4
+      }
+      val app = new TestApplication
+      val json = app.jsonPlan(p)
+      val tasks = (json \ "tasks")
+      val tasksArray = tasks.as[JsArray]
+      val tasksSeq = tasksArray.value
+      tasksSeq.length must equal (1)
+      (tasksSeq(0) \ "id").as[String] must equal ("t4")
+    }
+    
+    "be able to generate a multi-task plan - ids only" in {
+      val p = new ScriptedPlan {
+        add task 't2
+        add task 't4
+        add task 't6
+      }
+      val app = new TestApplication
+      val json = app.jsonPlan(p)
+      val tasks = (json \ "tasks")
+      val tasksArray = tasks.as[JsArray]
+      val tasksSeq = tasksArray.value
+      tasksSeq.length must equal (3)
+      (tasksArray \\ "id") map { _.as[String] } must contain theSameElementsAs (Seq("t2", "t4", "t6"))
     }
   }
 }
