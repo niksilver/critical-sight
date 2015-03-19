@@ -40,7 +40,7 @@ trait Application {
   }
   
   def jsonPlan(p: Plan): JsObject = {
-    val sch = p.schedule
+    val sch = p.bufferedSchedule
     implicit val taskWrites = new Writes[Task] {
       def writes(t: Task) = Json.obj(
           "id" -> t.id.name,
