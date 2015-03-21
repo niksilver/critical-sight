@@ -45,7 +45,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks = (json \ "tasks")
+      val tasks = (json \ "periods")
       val tasksArray = tasks.as[JsArray]
       val tasksSeq = tasksArray.value
       tasksSeq.length must equal (1)
@@ -58,7 +58,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks = (json \ "tasks")
+      val tasks = (json \ "periods")
       val tasksArray = tasks.as[JsArray]
       val tasksSeq = tasksArray.value
       tasksSeq.length must equal (1)
@@ -73,7 +73,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks = (json \ "tasks")
+      val tasks = (json \ "periods")
       val tasksArray = tasks.as[JsArray]
       val tasksSeq = tasksArray.value
       tasksSeq.length must equal (3)
@@ -88,7 +88,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks = (json \ "tasks")
+      val tasks = (json \ "periods")
       val tasksArray = tasks.as[JsArray]
       val tasksSeq = tasksArray.value
       tasksSeq.length must equal (3)
@@ -105,7 +105,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks = (json \ "tasks")
+      val tasks = (json \ "periods")
       val tasksArray = tasks.as[JsArray]
       val tasksSeq = tasksArray.value
       tasksSeq.length must equal (3)
@@ -121,7 +121,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks = (json \ "tasks")
+      val tasks = (json \ "periods")
       val tasksArray = tasks.as[JsArray]
       val tasksSeq = tasksArray.value
       tasksSeq.length must equal (3)
@@ -140,7 +140,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks = (json \ "tasks")
+      val tasks = (json \ "periods")
       val tasksArray = tasks.as[JsArray]
       val tasksSeq = tasksArray.value
       tasksSeq.length must equal (3)

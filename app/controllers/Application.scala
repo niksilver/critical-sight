@@ -48,7 +48,7 @@ trait Application {
           "start" -> sch.start(t),
           "type" -> "task")
     }
-    Json.obj("tasks" -> Json.toJson(p.tasks))
+    Json.obj("periods" -> Json.toJson(p.tasks))
   }
 }
 
