@@ -45,8 +45,7 @@ trait Application {
       def writes(t: Task) = Json.obj(
           "id" -> t.id.name,
           "duration" -> t.duration,
-          "start" -> sch.start(t),
-          "type" -> "task")
+          "start" -> sch.start(t))
     }
     Json.obj("periods" -> Json.toJson(p.tasks))
   }

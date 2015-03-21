@@ -1,13 +1,9 @@
 package controllers
 
 import scala.concurrent.Future
-
-import org.pigsaw.ccpm.Plan
-import org.pigsaw.ccpm.PlanVerbs
-import org.pigsaw.ccpm.ScriptedPlan
+import org.pigsaw.ccpm._
 import org.scalatest.MustMatchers
 import org.scalatestplus.play.PlaySpec
-
 import play.api.libs.json._
 import play.api.mvc.Controller
 import play.api.mvc.Result
@@ -36,6 +32,10 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       (obj \\ "id")(0).as[String] must equal("t0")
     }
   }
+  
+  implicit val taskReads: Reads[Task] = {
+    ( JsPath \ "id" ).read[String]
+  } map { idName => Task(Symbol(idName)) }
 
   "Application.plan" must {
     
@@ -45,11 +45,9 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks = (json \ "periods")
-      val tasksArray = tasks.as[JsArray]
-      val tasksSeq = tasksArray.value
-      tasksSeq.length must equal (1)
-      (tasksSeq(0) \ "id").as[String] must equal ("t0")
+      val tasks: Seq[Task] = (json \ "periods").validate[Seq[Task]].get
+      tasks.length must equal (1)
+      (tasks(0).id) must equal ( 't0 )
     }
     
     "be able to generate a one-task plan - id only (2 - to avoid faking)" in {
@@ -58,11 +56,9 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks = (json \ "periods")
-      val tasksArray = tasks.as[JsArray]
-      val tasksSeq = tasksArray.value
-      tasksSeq.length must equal (1)
-      (tasksSeq(0) \ "id").as[String] must equal ("t4")
+      val tasks: Seq[Task] = (json \ "periods").validate[Seq[Task]].get
+      tasks.length must equal (1)
+      (tasks(0).id) must equal ( 't4 )
     }
     
     "be able to generate a multi-task plan - ids only" in {
@@ -73,28 +69,9 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks = (json \ "periods")
-      val tasksArray = tasks.as[JsArray]
-      val tasksSeq = tasksArray.value
-      tasksSeq.length must equal (3)
-      (tasksArray \\ "id") map { _.as[String] } must contain theSameElementsAs (Seq("t2", "t4", "t6"))
-    }
-    
-    "be include period type 'task' for tasks" in {
-      val p = new ScriptedPlan {
-        add task 't2
-        add task 't4
-        add task 't6
-      }
-      val app = new TestApplication
-      val json = app.jsonPlan(p)
-      val tasks = (json \ "periods")
-      val tasksArray = tasks.as[JsArray]
-      val tasksSeq = tasksArray.value
-      tasksSeq.length must equal (3)
-      (tasksSeq(0) \ "type").as[String] must equal ("task")
-      (tasksSeq(1) \ "type").as[String] must equal ("task")
-      (tasksSeq(2) \ "type").as[String] must equal ("task")
+      val tasks: Seq[Task] = (json \ "periods").validate[Seq[Task]].get
+      tasks.length must equal (3)
+      (tasks map { _.id }) must contain theSameElementsAs (Seq('t2, 't4, 't6))
     }
     
     "be able to generate a multi-task plan - durations" in {
