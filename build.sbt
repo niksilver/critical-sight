@@ -15,7 +15,7 @@ scalacOptions ++=
 // views.html.Application
 // which are generated from the views directory.
 //
-unmanagedJars in Compile += ( baseDirectory.value / "target/scala-2.11/classes_managed" )
+unmanagedJars in Compile += ( baseDirectory.value / "target/scala-2.11/classes" )
 
 // This added by following
 // https://www.playframework.com/documentation/2.3.8/Build
