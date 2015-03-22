@@ -43,6 +43,7 @@ trait Application {
     val sch = p.bufferedSchedule
     implicit val taskWrites = new Writes[Task] {
       def writes(t: Task) = Json.obj(
+          "type" -> "blah",
           "id" -> t.id.name,
           "duration" -> t.duration,
           "start" -> sch.start(t))

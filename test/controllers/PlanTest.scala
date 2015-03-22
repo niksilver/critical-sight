@@ -90,6 +90,18 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       durs must contain theSameElementsAs (Seq(22.0, 44.0, 66.0))
     }
     
+    "be include a type for each task" in {
+      val p = new ScriptedPlan {
+        add task 't2 duration 22
+        add task 't4 duration 44
+        add task 't6 duration 66
+      }
+      val app = new TestApplication
+      val json = app.jsonPlan(p)
+      val types = (JsPath \ "periods" \\ "type")(json) map ( _.as[String] )
+      types.size must equal (3)
+    }
+    
     "be able to generate a multi-task plan - start times" in {
       val p = new ScriptedPlan {
         add task 't2 duration 22
