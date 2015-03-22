@@ -33,22 +33,21 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
     }
   }
   
-  def typesMap(json: JsObject): Map[String, String] = {
-    val typesList = for {
+  def propertyMap[V](json: JsObject, prop: String, reads: Reads[V]): Map[String, V] = {
+    val kvList = for {
       period <- (json \ "periods").as[Seq[JsValue]]
       id = (period \ "id").as[String]
-      start = (period \ "type").as[String]
-    } yield (id -> start)
-    typesList.toMap
+      value = (period \ prop).as(reads)
+    } yield (id -> value)
+    kvList.toMap
+  }
+  
+  def typesMap(json: JsObject): Map[String, String] = {
+    propertyMap(json, "type", Reads.StringReads)
   }
   
   def startsMap(json: JsObject): Map[String, Double] = {
-    val startsList = for {
-      period <- (json \ "periods").as[Seq[JsValue]]
-      id = (period \ "id").as[String]
-      start = (period \ "start").as[Double]
-    } yield (id -> start)
-    startsList.toMap
+    propertyMap(json, "start", Reads.DoubleReads)
   }
 
   "Application.plan" must {
