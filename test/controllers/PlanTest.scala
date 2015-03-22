@@ -33,6 +33,15 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
     }
   }
   
+  def typesMap(json: JsObject): Map[String, String] = {
+    val typesList = for {
+      period <- (json \ "periods").as[Seq[JsValue]]
+      id = (period \ "id").as[String]
+      start = (period \ "type").as[String]
+    } yield (id -> start)
+    typesList.toMap
+  }
+  
   def startsMap(json: JsObject): Map[String, Double] = {
     val startsList = for {
       period <- (json \ "periods").as[Seq[JsValue]]
@@ -91,7 +100,28 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       durs must contain theSameElementsAs (Seq(22.0, 44.0, 66.0))
     }
     
-    "be include a type for each task" in {
+    "be include the correct type for each period" in {
+      val p = new ScriptedPlan {
+        add task 't2 duration 22
+        add task 't4 duration 44
+        add task 't6 duration 66
+      }
+      val app = new TestApplication
+      val json = app.jsonPlan(p)
+      val types = typesMap(json)
+      
+      types.size must equal (4)
+      types("t2") must equal ("task")
+      types("t4") must equal ("task")
+      types("t6") must equal ("task")
+      
+      // Work out the id of the buffer
+      val bId = types.keys.filter( id => id != "t2" && id != "t4" && id != "t6").head
+      
+      types(bId) must equal ("buffer")
+    }
+    
+    "be include a type for each period" in {
       val p = new ScriptedPlan {
         add task 't2 duration 22
         add task 't4 duration 44
@@ -100,7 +130,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val app = new TestApplication
       val json = app.jsonPlan(p)
       val types = (JsPath \ "periods" \\ "type")(json) map ( _.as[String] )
-      types.size must equal (3)
+      types.size must equal (4)
     }
     
     "be able to generate a multi-task plan - start times" in {

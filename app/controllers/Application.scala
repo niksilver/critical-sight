@@ -42,13 +42,14 @@ trait Application {
     val sch = p.bufferedSchedule
     implicit val taskWrites = new Writes[Task] {
       def writes(t: Task) = Json.obj(
-          "type" -> "blah",
+          "type" -> "task",
           "id" -> t.id.name,
           "duration" -> t.duration,
           "start" -> sch.start(t))
     }
     implicit val cpWrites = new Writes[CompletionBuffer] {
       def writes(cp: CompletionBuffer) = Json.obj(
+          "type" -> "buffer",
           "id" -> "someValue",
           "start" -> 99.99)
     }
