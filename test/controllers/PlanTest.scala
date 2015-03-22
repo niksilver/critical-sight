@@ -51,8 +51,8 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val app = new TestApplication
       val json = app.jsonPlan(p)
       val ids = (JsPath \ "periods" \\ "id")(json) map ( _.as[String])
-      ids.length must equal (1)
-      ids(0) must equal ( "t0" )
+      ids.length must equal (2) // Includes completion buffer
+      ids must contain ( "t0" )
     }
     
     "be able to generate a one-task plan - id only (2 - to avoid faking)" in {
@@ -62,8 +62,8 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val app = new TestApplication
       val json = app.jsonPlan(p)
       val ids = (JsPath \ "periods" \\ "id")(json) map ( _.as[String] )
-      ids.length must equal (1)
-      ids(0) must equal ( "t4" )
+      ids.length must equal (2) // Includes completion buffer
+      ids must contain ( "t4" )
     }
     
     "be able to generate a multi-task plan - ids only" in {
@@ -75,7 +75,8 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val app = new TestApplication
       val json = app.jsonPlan(p)
       val ids = (JsPath \ "periods" \\ "id")(json) map ( _.as[String] )
-      ids must contain theSameElementsAs (Seq("t2", "t4", "t6"))
+      ids.length must equal (4) // Includes completion buffer
+      ids must contain allOf ("t2", "t4", "t6")
     }
     
     "be able to generate a multi-task plan - durations" in {
@@ -112,7 +113,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val app = new TestApplication
       val json = app.jsonPlan(p)
       val starts = startsMap(json)
-      starts.size must equal (3)
+      starts.size must equal (4) // Includes completion buffer
       (starts("t2") + 22) must equal (starts("t4"))
       (starts("t4") + 44) must equal (starts("t6"))
     }
@@ -128,7 +129,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val app = new TestApplication
       val json = app.jsonPlan(p)
       val starts = startsMap(json)
-      starts.size must equal (3)
+      starts.size must equal (4) // Includes completion buffer
       (starts("t1") + 11) must be < (starts("t3"))
       (starts("t2") + 22) must equal (starts("t3"))
     }

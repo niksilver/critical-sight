@@ -2,8 +2,7 @@ package controllers
 
 import play.api.mvc.Action
 import play.api.mvc.Controller
-import org.pigsaw.ccpm.Task
-import org.pigsaw.ccpm.Plan
+import org.pigsaw.ccpm._
 import play.api.libs.json.Json
 import org.pigsaw.ccpm.ScriptedPlan
 import play.api.libs.json._
@@ -48,7 +47,19 @@ trait Application {
           "duration" -> t.duration,
           "start" -> sch.start(t))
     }
-    Json.obj("periods" -> Json.toJson(p.tasks))
+    implicit val cpWrites = new Writes[CompletionBuffer] {
+      def writes(cp: CompletionBuffer) = Json.obj(
+          "id" -> "someValue",
+          "start" -> 99.99)
+    }
+    implicit val periodWrites: Writes[Period] = new Writes[Period] {
+      def writes(p: Period) = p match {
+        case t: Task => taskWrites.writes(t)
+        case cp: CompletionBuffer => cpWrites.writes(cp)
+      }
+    }
+    val periods = Set[Period]() ++ p.tasks + p.completionBuffer
+    Json.obj("periods" -> Json.toJson(periods))
   }
 }
 
