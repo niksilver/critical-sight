@@ -33,9 +33,14 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
     }
   }
   
-  implicit val taskReads: Reads[Task] = {
-    ( JsPath \ "id" ).read[String]
-  } map { idName => Task(Symbol(idName)) }
+  def startsMap(json: JsObject): Map[String, Double] = {
+    val startsList = for {
+      period <- (json \ "periods").as[Seq[JsValue]]
+      id = (period \ "id").as[String]
+      start = (period \ "start").as[Double]
+    } yield (id -> start)
+    startsList.toMap
+  }
 
   "Application.plan" must {
     
@@ -45,9 +50,9 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks: Seq[Task] = (json \ "periods").validate[Seq[Task]].get
-      tasks.length must equal (1)
-      (tasks(0).id) must equal ( 't0 )
+      val ids = (JsPath \ "periods" \\ "id")(json) map ( _.as[String])
+      ids.length must equal (1)
+      ids(0) must equal ( "t0" )
     }
     
     "be able to generate a one-task plan - id only (2 - to avoid faking)" in {
@@ -56,9 +61,9 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks: Seq[Task] = (json \ "periods").validate[Seq[Task]].get
-      tasks.length must equal (1)
-      (tasks(0).id) must equal ( 't4 )
+      val ids = (JsPath \ "periods" \\ "id")(json) map ( _.as[String] )
+      ids.length must equal (1)
+      ids(0) must equal ( "t4" )
     }
     
     "be able to generate a multi-task plan - ids only" in {
@@ -69,9 +74,8 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks: Seq[Task] = (json \ "periods").validate[Seq[Task]].get
-      tasks.length must equal (3)
-      (tasks map { _.id }) must contain theSameElementsAs (Seq('t2, 't4, 't6))
+      val ids = (JsPath \ "periods" \\ "id")(json) map ( _.as[String] )
+      ids must contain theSameElementsAs (Seq("t2", "t4", "t6"))
     }
     
     "be able to generate a multi-task plan - durations" in {
@@ -82,11 +86,8 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks = (json \ "periods")
-      val tasksArray = tasks.as[JsArray]
-      val tasksSeq = tasksArray.value
-      tasksSeq.length must equal (3)
-      (tasksArray \\ "duration") map { _.as[Double] } must contain theSameElementsAs (Seq(22, 44, 66))
+      val durs = (JsPath \ "periods" \\ "duration")(json) map ( _.as[Double] )
+      durs must contain theSameElementsAs (Seq(22.0, 44.0, 66.0))
     }
     
     "be able to generate a multi-task plan - start times" in {
@@ -98,11 +99,8 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks = (json \ "periods")
-      val tasksArray = tasks.as[JsArray]
-      val tasksSeq = tasksArray.value
-      tasksSeq.length must equal (3)
-      val starts = (tasksSeq map { t => (t \ "id").as[String] -> (t \ "start").as[Double] }).toMap
+      val starts = startsMap(json)
+      starts.size must equal (3)
       (starts("t2") + 22) must equal (starts("t4"))
       (starts("t4") + 44) must equal (starts("t6"))
     }
@@ -117,11 +115,8 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       }
       val app = new TestApplication
       val json = app.jsonPlan(p)
-      val tasks = (json \ "periods")
-      val tasksArray = tasks.as[JsArray]
-      val tasksSeq = tasksArray.value
-      tasksSeq.length must equal (3)
-      val starts = (tasksSeq map { t => (t \ "id").as[String] -> (t \ "start").as[Double] }).toMap
+      val starts = startsMap(json)
+      starts.size must equal (3)
       (starts("t1") + 11) must be < (starts("t3"))
       (starts("t2") + 22) must equal (starts("t3"))
     }
