@@ -27,13 +27,13 @@ describe("Plan", function() {
 		it("should contain the 0th task given a non-empty spec", function() {
 			var spec = { periods: [{ id: 't0', start: 1.0, duration: 1.0 }] };
 			var p = new CS.Plan(spec);
-			expect( p.periodsList[0].id ).toEqual( 't0' );
+			expect( p.periodList[0].id ).toEqual( 't0' );
 		});
 		
 		it("should allow the period to be an empty array", function() {
 			var spec = { periods: [] };
 			var p = new CS.Plan(spec);
-			expect( p.periodsList.length ).toEqual( 0 );
+			expect( p.periodList.length ).toEqual( 0 );
 		});
 		
 		it("should require every period to have an id", function() {
@@ -51,7 +51,7 @@ describe("Plan", function() {
 		it("should allow a start of 0.0", function() {
 			var spec = { periods: [{ id: 't0', start: 0.0, duration: 1.0 }] };
 			var p = new CS.Plan(spec);
-			expect( p.periodsList[0].start ).toEqual( 0.0 );
+			expect( p.periodList[0].start ).toEqual( 0.0 );
 		});
 		
 		it("should require every period to have a duration", function() {

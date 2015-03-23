@@ -15,7 +15,7 @@ CriticalSight.Plan = function(spec) {
 	var CS = CriticalSight;
 	var Util = CriticalSight.Util;
 
-	// Create the periodsList
+	// Create the periodList
 	if (!spec.periods) {
 		throw new Error("No periods property found");
 	}
@@ -26,7 +26,7 @@ CriticalSight.Plan = function(spec) {
 	/**
 	 * The array of periods, with an end property for each one.
 	 */
-	this.periodsList = spec.periods.map(function(curr, idx, arr) {
+	this.periodList = spec.periods.map(function(curr, idx, arr) {
 		curr.end = curr.start + curr.duration;
 		return curr;
 	});
@@ -37,7 +37,7 @@ CriticalSight.Plan = function(spec) {
 	var startFn = function(prev, curr, index, arr) {
 		return (prev.start <= curr.start) ? prev : curr;
 	};
-	this.start = (this.periodsList.length === 0) ? undefined : this.periodsList.reduce(startFn).start;
+	this.start = (this.periodList.length === 0) ? undefined : this.periodList.reduce(startFn).start;
 
 	/**
 	 * The end of the latest task, or undefined if there are no tasks.
@@ -45,19 +45,19 @@ CriticalSight.Plan = function(spec) {
 	var endFn = function(prev, curr, index, arr) {
 		return (prev.end >= curr.end) ? prev : curr;
 	};
-	this.end = (this.periodsList.length === 0) ? undefined : this.periodsList.reduce(endFn).end;
+	this.end = (this.periodList.length === 0) ? undefined : this.periodList.reduce(endFn).end;
 	
 	/**
 	 * The time between the plan start and end
 	 */
-	this.duration = (this.periodsList.length === 0) ? undefined : (this.end - this.start);
+	this.duration = (this.periodList.length === 0) ? undefined : (this.end - this.start);
 	
 	/**
 	 * Get a period by its id, or undefined if it's not specified
 	 */
 	this.period = function(id) {
-		for (var i = 0; i < this.periodsList.length; i++) {
-			var period = this.periodsList[i];
+		for (var i = 0; i < this.periodList.length; i++) {
+			var period = this.periodList[i];
 			if (period.id === id) { return period; }
 		}
 	};
