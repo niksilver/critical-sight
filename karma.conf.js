@@ -34,9 +34,10 @@ module.exports = function(config) {
 
 
     // test results reporter to use
-    // possible values: 'dots', 'progress'
+    // possible defaul values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    // We're using karmer-mocha-reporter
+    reporters: ['mocha'],
 
 
     // web server port

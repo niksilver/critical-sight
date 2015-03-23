@@ -15,18 +15,18 @@ CriticalSight.Plan = function(spec) {
 	var CS = CriticalSight;
 	var Util = CriticalSight.Util;
 
-	// Create the taskList
-	if (!spec.tasks) {
-		throw new Error("No tasks property found");
+	// Create the periodsList
+	if (!spec.periods) {
+		throw new Error("No periods property found");
 	}
-	Util.forEachRequireProperty(spec.tasks, 'id', "Found a task without an id");
-	Util.forEachRequireProperty(spec.tasks, 'start', "Found a task without a start");
-	Util.forEachRequireProperty(spec.tasks, 'duration', "Found a task without a duration");
+	Util.forEachRequireProperty(spec.periods, 'id', "Found a period without an id");
+	Util.forEachRequireProperty(spec.periods, 'start', "Found a period without a start");
+	Util.forEachRequireProperty(spec.periods, 'duration', "Found a period without a duration");
 	
 	/**
-	 * The array of tasks, with an end property for each one.
+	 * The array of periods, with an end property for each one.
 	 */
-	this.taskList = spec.tasks.map(function(curr, idx, arr) {
+	this.periodsList = spec.periods.map(function(curr, idx, arr) {
 		curr.end = curr.start + curr.duration;
 		return curr;
 	});
@@ -37,7 +37,7 @@ CriticalSight.Plan = function(spec) {
 	var startFn = function(prev, curr, index, arr) {
 		return (prev.start <= curr.start) ? prev : curr;
 	};
-	this.start = (this.taskList.length === 0) ? undefined : this.taskList.reduce(startFn).start;
+	this.start = (this.periodsList.length === 0) ? undefined : this.periodsList.reduce(startFn).start;
 
 	/**
 	 * The end of the latest task, or undefined if there are no tasks.
@@ -45,38 +45,38 @@ CriticalSight.Plan = function(spec) {
 	var endFn = function(prev, curr, index, arr) {
 		return (prev.end >= curr.end) ? prev : curr;
 	};
-	this.end = (this.taskList.length === 0) ? undefined : this.taskList.reduce(endFn).end;
+	this.end = (this.periodsList.length === 0) ? undefined : this.periodsList.reduce(endFn).end;
 	
 	/**
 	 * The time between the plan start and end
 	 */
-	this.duration = (this.taskList.length === 0) ? undefined : (this.end - this.start);
+	this.duration = (this.periodsList.length === 0) ? undefined : (this.end - this.start);
 	
 	/**
-	 * Get a task by its id, or undefined if it's not specified
+	 * Get a period by its id, or undefined if it's not specified
 	 */
-	this.task = function(id) {
-		for (var i = 0; i < this.taskList.length; i++) {
-			var task = this.taskList[i];
-			if (task.id === id) { return task; }
+	this.period = function(id) {
+		for (var i = 0; i < this.periodsList.length; i++) {
+			var period = this.periodsList[i];
+			if (period.id === id) { return period; }
 		}
 	};
 	
 	/**
-	 * An array of dependencies, referenced by task id only
+	 * An array of dependencies, referenced by period id only
 	 */
 	(spec.dependencies || []).forEach(function(pair, idx, deps) {
 		if (!Array.isArray(pair)) {
-			throw new CS.BadlyDefinedObjectError("Expected a task id pair, but found '" + pair + "'");
+			throw new CS.BadlyDefinedObjectError("Expected a period id pair, but found '" + pair + "'");
 		}
 		if (pair.length != 2) {
 			throw new CS.BadlyDefinedObjectError("Dependency " + idx + " needs two elements, found " + pair.length);
 		}
-		if (self.task(pair[0]) === undefined) {
-			throw new CS.UndefinedTaskError("Undefined task id '" + pair[0] + "' among the dependencies");
+		if (self.period(pair[0]) === undefined) {
+			throw new CS.UndefinedTaskError("Undefined period id '" + pair[0] + "' among the dependencies");
 		}
-		if (self.task(pair[1]) === undefined) {
-			throw new CS.UndefinedTaskError("Undefined task id '" + pair[1] + "' among the dependencies");
+		if (self.period(pair[1]) === undefined) {
+			throw new CS.UndefinedTaskError("Undefined period id '" + pair[1] + "' among the dependencies");
 		}
 	});
 	this.dependencyIDs = spec.dependencies || [];
