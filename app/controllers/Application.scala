@@ -60,8 +60,11 @@ trait Application {
         case cp: CompletionBuffer => cpWrites.writes(cp)
       }
     }
-    val periods = Set[Period]() ++ p.tasks + p.completionBuffer
-    Json.obj("periods" -> Json.toJson(periods))
+    val periods = Set[Period]() ++ p.tasks ++ p.completionBufferOption
+    val deps = p.dependencies.toSeq map { tPair => Seq(tPair._1.id.name, tPair._2.id.name) }
+    Json.obj(
+        "periods" -> Json.toJson(periods),
+        "dependencies" -> Json.toJson(deps))
   }
 }
 

@@ -263,7 +263,31 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val json2CpDur = durationsMap(json2)(json2CpId)
       
       json2CpDur must be > (json1CpDur)
-
+    }
+    
+    "include an empty dependencies list if there are no tasks dependencies" in {
+      val app = new TestApplication()
+      
+      val p = new ScriptedPlan {}
+      val json = app.jsonPlan(p)
+      val deps = (json \ "dependencies").as[Seq[String]]
+      
+      deps must equal (Nil)
+    }
+    
+    "include the correct dependencies list if there are some task dependencies" in {
+      val app = new TestApplication()
+      
+      val p = new ScriptedPlan {
+        add task 't0
+        add task 't1
+        add task 't2
+        't0 ~> 't1 ~> 't2
+      }
+      val json = app.jsonPlan(p)
+      val deps = (json \ "dependencies").as[Seq[Seq[String]]]
+      
+      deps must contain theSameElementsAs (Seq(Seq("t0", "t1"), Seq("t1", "t2")))
     }
   }
 }
