@@ -57,6 +57,10 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
   def startsMap(json: JsObject): Map[String, Double] = {
     propertyMap(json, "start", Reads.DoubleReads)
   }
+  
+  def durationsMap(json: JsObject): Map[String, Double] = {
+    propertyMap(json, "duration", Reads.DoubleReads)
+  }
 
   "Application.plan" must {
     
@@ -104,10 +108,12 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val app = new TestApplication
       val json = app.jsonPlan(p)
       val durs = (JsPath \ "periods" \\ "duration")(json) map ( _.as[Double] )
-      durs must contain theSameElementsAs (Seq(22.0, 44.0, 66.0))
+      durs must contain (22.0)
+      durs must contain (44.0)
+      durs must contain (66.0)
     }
     
-    "be include the correct type for each period" in {
+    "include the correct type for each period" in {
       val p = new ScriptedPlan {
         add task 't2 duration 22
         add task 't4 duration 44
@@ -128,7 +134,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       types(bId) must equal ("buffer")
     }
     
-    "be include a type for each period" in {
+    "include a type for each period" in {
       val p = new ScriptedPlan {
         add task 't2 duration 22
         add task 't4 duration 44
@@ -155,7 +161,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       (starts("t4") + 44) must equal (starts("t6"))
     }
     
-    "be work out start times from the buffered schedule" in {
+    "work out start times from the buffered schedule" in {
       val p = new ScriptedPlan {
         add task 't1 duration 11
         add task 't2 duration 22
@@ -224,6 +230,40 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val cpStart = (starts find { _._1 != "t0" }).get._2
 
       (cpStart) must equal (t0Start + 33)
+    }
+    
+    "have duration for the completion buffer" in {
+      val app = new TestApplication()
+      
+      val p = new ScriptedPlan {
+        add task 't0 duration 10
+      }
+      val json = app.jsonPlan(p)
+      val jsonCpId = (ids(json) find { _ == p.completionBuffer.id.name }).get
+      val jsonCpDur = durationsMap(json)(jsonCpId)
+      
+      jsonCpDur must be > (0.0)
+    }
+    
+    "have duration for the completion buffer which is based on the project length" in {
+      val app = new TestApplication()
+      
+      val p1 = new ScriptedPlan {
+        add task 't0 duration 10
+      }
+      val json1 = app.jsonPlan(p1)
+      val json1CpId = (ids(json1) find { _ == p1.completionBuffer.id.name }).get
+      val json1CpDur = durationsMap(json1)(json1CpId)
+      
+      val p2 = new ScriptedPlan {
+        add task 't0 duration 11
+      }
+      val json2 = app.jsonPlan(p2)
+      val json2CpId = (ids(json2) find { _ == p2.completionBuffer.id.name }).get
+      val json2CpDur = durationsMap(json2)(json2CpId)
+      
+      json2CpDur must be > (json1CpDur)
+
     }
   }
 }
