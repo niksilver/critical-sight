@@ -1,0 +1,43 @@
+<html>
+<!--  from http://htmlcheats.com/fabric-js/fabric-js-tutorial-a-complete-fabric-js-example-beginners-2013/ -->
+<head>
+<meta charset="utf-8">
+<title>fabric.js-simple text display</title>
+
+<!-- Get Fabric.js from CDN -->
+<script
+	src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.0/fabric.min.js"></script>
+
+<!-- Get the jQuery from CDN. Required for ready() function. -->
+<script src="http://code.jquery.com/jquery-2.1.3.js"></script>
+
+</head>
+<body>
+
+	<canvas id="c" style="border: 1px solid black;"></canvas>
+
+</body>
+
+<!-- Our own code -->
+<script src="/public/javascripts/CriticalSight.js"></script>
+<script src="/public/javascripts/Drawing.js"></script>
+<script src="/public/javascripts/Plan.js"></script>
+<script src="/public/javascripts/DemoChart.js"></script>
+
+<script>
+	var CS = CriticalSight;
+	
+	$(function() {
+
+		var htmlCanvas = document.getElementById('c');
+		htmlCanvas.width = 1000;
+		htmlCanvas.height = 500;
+
+		var canvas = new fabric.Canvas("c");
+
+// 		$.getJSON('/plan', "", function(data) {
+// 		});
+		CS.DemoChart.run(canvas);
+	});
+</script>
+</html>
