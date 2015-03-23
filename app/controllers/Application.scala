@@ -50,7 +50,7 @@ trait Application {
     implicit val cpWrites = new Writes[CompletionBuffer] {
       def writes(cp: CompletionBuffer) = Json.obj(
           "type" -> "buffer",
-          "id" -> "someValue",
+          "id" -> cp.id.name,
           "start" -> 99.99)
     }
     implicit val periodWrites: Writes[Period] = new Writes[Period] {

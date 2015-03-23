@@ -33,6 +33,14 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
     }
   }
   
+  def ids(json: JsObject): Seq[String] = {
+    val ids = for {
+      period <- (json \ "periods").as[Seq[JsValue]]
+      id = (period \ "id").as[String]
+    } yield id
+    ids
+  }
+  
   def propertyMap[V](json: JsObject, prop: String, reads: Reads[V]): Map[String, V] = {
     val kvList = for {
       period <- (json \ "periods").as[Seq[JsValue]]
@@ -161,6 +169,36 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       starts.size must equal (4) // Includes completion buffer
       (starts("t1") + 11) must be < (starts("t3"))
       (starts("t2") + 22) must equal (starts("t3"))
+    }
+    
+    "include a proper id for the completion buffer" in {
+      // The completion buffer id is automatically generated, so
+      // to test we haven't got a stub value in there we'll make
+      // plan, get the completion buffer id, then make another plan
+      // with task that has that id and get *that* completion
+      // buffer id. They should be different.
+
+      val app = new TestApplication()
+      
+      val p1 = new ScriptedPlan {
+        add task 't0
+      }
+      val p1CpId = p1.completionBuffer.id
+      val json1 = app.jsonPlan(p1)
+      val json1CpId = (ids(json1) find { _ != "t0" }).get
+      
+      json1CpId must equal (p1CpId.name)
+      
+      val p2 = new ScriptedPlan {
+        add task p1CpId
+      }
+      val p2CpId = p2.completionBuffer.id
+      val json2 = app.jsonPlan(p2)
+      val json2CpId = (ids(json2) find { _ != p1CpId.name }).get
+      
+      p1CpId must not equal (p2CpId)
+      json2CpId must equal (p2CpId.name)
+      
     }
   }
 }
