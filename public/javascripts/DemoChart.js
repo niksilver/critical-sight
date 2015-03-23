@@ -7,8 +7,8 @@ CriticalSight.DemoChart = {
 		
 		var CS = CriticalSight;
 
-		var taskSpec = {
-			tasks : [ {
+		var planSpec = {
+			periods : [ {
 				id : 't1',
 				start : 0,
 				duration : 3
@@ -31,18 +31,18 @@ CriticalSight.DemoChart = {
 			} ]
 		};
 
-		var plan = new CS.Plan(taskSpec);
+		var plan = new CS.Plan(planSpec);
 		
 		var htmlCanvasWidth = canvas.getElement().width;
 		var sizer = new CS.Sizer(20, htmlCanvasWidth / plan.duration);
-		var tMaker = new CS.TaskMaker(sizer);
+		var pMaker = new CS.PeriodMaker(sizer);
 
-		for (var i = 0; i < plan.taskList.length; i++) {
-			var task = plan.taskList[i];
-			var start = task.start;
-			var duration = task.duration;
-			var taskShape = tMaker.taskShape(i, start, duration);
-			canvas.add(taskShape);
+		for (var i = 0; i < plan.periodList.length; i++) {
+			var period = plan.periodList[i];
+			var start = period.start;
+			var duration = period.duration;
+			var periodShape = pMaker.periodShape(i, start, duration);
+			canvas.add(periodShape);
 		}
 	}
 };

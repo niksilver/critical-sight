@@ -32,7 +32,7 @@ CriticalSight.Sizer = function(unitHeight, unitWidth) {
 	};
 };
 
-CriticalSight.TaskMaker = function(sizer) {
+CriticalSight.PeriodMaker = function(sizer) {
 	'use strict';
 	
 	this.sizer = sizer;
@@ -42,9 +42,9 @@ CriticalSight.TaskMaker = function(sizer) {
 	var taskStrokeWidth = 2;
 	
 	/**
-	 * A shape for a task (depends if it's zero-length or not).
+	 * A shape for a period (depends if it's zero-length or not).
 	 */
-	this.taskShape = function(idx, start, duration) {
+	this.periodShape = function(idx, start, duration) {
 		if (duration === 0 ) {
 			return this.taskDiamond(idx, start);
 		} else {
