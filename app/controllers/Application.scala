@@ -51,7 +51,7 @@ trait Application {
       def writes(cp: CompletionBuffer) = Json.obj(
           "type" -> "buffer",
           "id" -> cp.id.name,
-          "start" -> 99.99)
+          "start" -> sch.start(cp))
     }
     implicit val periodWrites: Writes[Period] = new Writes[Period] {
       def writes(p: Period) = p match {

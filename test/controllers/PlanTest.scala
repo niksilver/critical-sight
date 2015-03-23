@@ -198,7 +198,32 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       
       p1CpId must not equal (p2CpId)
       json2CpId must equal (p2CpId.name)
-      
+    }
+    
+    "have the correct start for the completion buffer (1)" in {
+      val p = new ScriptedPlan {
+        add task 't0 duration 22
+      }
+      val app = new TestApplication
+      val json = app.jsonPlan(p)
+      val starts = startsMap(json)
+      val t0Start = starts("t0")
+      val cpStart = (starts find { _._1 != "t0" }).get._2
+
+      (cpStart) must equal (t0Start + 22)
+    }
+    
+    "have the correct start for the completion buffer (2 - to avoid faking)" in {
+      val p = new ScriptedPlan {
+        add task 't0 duration 33
+      }
+      val app = new TestApplication
+      val json = app.jsonPlan(p)
+      val starts = startsMap(json)
+      val t0Start = starts("t0")
+      val cpStart = (starts find { _._1 != "t0" }).get._2
+
+      (cpStart) must equal (t0Start + 33)
     }
   }
 }
