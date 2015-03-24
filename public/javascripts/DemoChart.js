@@ -10,7 +10,7 @@ CriticalSight.DemoChart = {
 		var plan = new CS.Plan(spec);
 		
 		var htmlCanvasWidth = canvas.getElement().width;
-		var sizer = new CS.Sizer(20, htmlCanvasWidth / plan.duration, plan.start);
+		var sizer = new CS.Sizer(plan.start,htmlCanvasWidth / plan.duration, 20);
 		var pMaker = new CS.PeriodMaker(sizer);
 
 		for (var i = 0; i < plan.periodList.length; i++) {

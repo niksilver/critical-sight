@@ -2,7 +2,7 @@
  * Tools for building a Gantt chart.
  */
 
-CriticalSight.Sizer = function(unitHeight, unitWidth, planStart) {
+CriticalSight.Sizer = function(planStart, unitWidth, unitHeight) {
 	'use strict';
 	
 	this.topPadding = unitHeight * 0.5;
