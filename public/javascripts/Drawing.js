@@ -2,7 +2,7 @@
  * Tools for building a Gantt chart.
  */
 
-CriticalSight.Sizer = function(unitHeight, unitWidth) {
+CriticalSight.Sizer = function(unitHeight, unitWidth, planStart) {
 	'use strict';
 	
 	this.topPadding = unitHeight * 0.5;
@@ -21,7 +21,7 @@ CriticalSight.Sizer = function(unitHeight, unitWidth) {
 	 * Left of a task rectangle, where the start is at time `start`.
 	 */
 	this.left = function(start) {
-		return start * this.unitWidth;
+		return (start - planStart) * this.unitWidth;
 	};
 
 	/**

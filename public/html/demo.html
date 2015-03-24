@@ -35,9 +35,9 @@
 
 		var canvas = new fabric.Canvas("c");
 
-// 		$.getJSON('/plan', "", function(data) {
-// 		});
-		CS.DemoChart.run(canvas);
+		$.getJSON('/sample', "", function(spec) {
+			CS.DemoChart.run(canvas, spec);
+		});
 	});
 </script>
 </html>
