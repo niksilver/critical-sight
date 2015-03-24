@@ -14,25 +14,8 @@ import play.api.test.Helpers.defaultAwaitTimeout
 
 class PlanTest extends PlaySpec with MustMatchers with Results {
 
-  class TestApplication extends Application with Controller
+  class TestPlanController extends PlanController with Controller
 
-  "Some method" must {
-    "be able to product a JSON result" in {
-      val obj = Json.parse("""{ "greeting": "Hello, world!" }""")
-      (obj \ "greeting").as[String] must equal("Hello, world!")
-    }
-  }
-
-  "Application.sample" must {
-    "output a JSON object" in {
-      val app = new TestApplication
-      val result: Future[Result] = app.sample.apply(FakeRequest())
-      val bodyTest = contentAsString(result)
-      val obj = Json.parse(bodyTest)
-      (obj \\ "id")(0).as[String] must equal("t0")
-    }
-  }
-  
   def ids(json: JsObject): Seq[String] = {
     val ids = for {
       period <- (json \ "periods").as[Seq[JsValue]]
@@ -62,13 +45,13 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
     propertyMap(json, "duration", Reads.DoubleReads)
   }
 
-  "Application.plan" must {
+  "PlanController.plan" must {
     
     "be able to generate a one-task plan - id only (1)" in {
       val p = new ScriptedPlan {
         add task 't0
       }
-      val app = new TestApplication
+      val app = new TestPlanController
       val json = app.jsonPlan(p)
       val ids = (JsPath \ "periods" \\ "id")(json) map ( _.as[String])
       ids.length must equal (2) // Includes completion buffer
@@ -79,7 +62,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val p = new ScriptedPlan {
         add task 't4
       }
-      val app = new TestApplication
+      val app = new TestPlanController
       val json = app.jsonPlan(p)
       val ids = (JsPath \ "periods" \\ "id")(json) map ( _.as[String] )
       ids.length must equal (2) // Includes completion buffer
@@ -92,7 +75,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
         add task 't4
         add task 't6
       }
-      val app = new TestApplication
+      val app = new TestPlanController
       val json = app.jsonPlan(p)
       val ids = (JsPath \ "periods" \\ "id")(json) map ( _.as[String] )
       ids.length must equal (4) // Includes completion buffer
@@ -105,7 +88,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
         add task 't4 duration 44
         add task 't6 duration 66
       }
-      val app = new TestApplication
+      val app = new TestPlanController
       val json = app.jsonPlan(p)
       val durs = (JsPath \ "periods" \\ "duration")(json) map ( _.as[Double] )
       durs must contain (22.0)
@@ -119,7 +102,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
         add task 't4 duration 44
         add task 't6 duration 66
       }
-      val app = new TestApplication
+      val app = new TestPlanController
       val json = app.jsonPlan(p)
       val types = typesMap(json)
       
@@ -140,7 +123,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
         add task 't4 duration 44
         add task 't6 duration 66
       }
-      val app = new TestApplication
+      val app = new TestPlanController
       val json = app.jsonPlan(p)
       val types = (JsPath \ "periods" \\ "type")(json) map ( _.as[String] )
       types.size must equal (4)
@@ -153,7 +136,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
         add task 't6 duration 66
         't2 ~> 't4 ~> 't6        
       }
-      val app = new TestApplication
+      val app = new TestPlanController
       val json = app.jsonPlan(p)
       val starts = startsMap(json)
       starts.size must equal (4) // Includes completion buffer
@@ -169,7 +152,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
         't1 ~> 't3
         't2 ~> 't3
       }
-      val app = new TestApplication
+      val app = new TestPlanController
       val json = app.jsonPlan(p)
       val starts = startsMap(json)
       starts.size must equal (4) // Includes completion buffer
@@ -184,7 +167,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       // with task that has that id and get *that* completion
       // buffer id. They should be different.
 
-      val app = new TestApplication()
+      val app = new TestPlanController()
       
       val p1 = new ScriptedPlan {
         add task 't0
@@ -210,7 +193,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val p = new ScriptedPlan {
         add task 't0 duration 22
       }
-      val app = new TestApplication
+      val app = new TestPlanController
       val json = app.jsonPlan(p)
       val starts = startsMap(json)
       val t0Start = starts("t0")
@@ -223,7 +206,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val p = new ScriptedPlan {
         add task 't0 duration 33
       }
-      val app = new TestApplication
+      val app = new TestPlanController
       val json = app.jsonPlan(p)
       val starts = startsMap(json)
       val t0Start = starts("t0")
@@ -233,7 +216,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
     }
     
     "have duration for the completion buffer" in {
-      val app = new TestApplication()
+      val app = new TestPlanController()
       
       val p = new ScriptedPlan {
         add task 't0 duration 10
@@ -246,7 +229,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
     }
     
     "have duration for the completion buffer which is based on the project length" in {
-      val app = new TestApplication()
+      val app = new TestPlanController()
       
       val p1 = new ScriptedPlan {
         add task 't0 duration 10
@@ -266,7 +249,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
     }
     
     "include an empty dependencies list if there are no tasks dependencies" in {
-      val app = new TestApplication()
+      val app = new TestPlanController()
       
       val p = new ScriptedPlan {}
       val json = app.jsonPlan(p)
@@ -276,7 +259,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
     }
     
     "include the correct dependencies list if there are some task dependencies" in {
-      val app = new TestApplication()
+      val app = new TestPlanController()
       
       val p = new ScriptedPlan {
         add task 't0
