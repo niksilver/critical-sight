@@ -15,9 +15,10 @@ CriticalSight.DemoChart = {
 
 		for (var i = 0; i < plan.periodList.length; i++) {
 			var period = plan.periodList[i];
+			var type = period.type
 			var start = period.start;
 			var duration = period.duration;
-			var periodShape = pMaker.periodShape(i, start, duration);
+			var periodShape = pMaker.periodShape(type, i, start, duration);
 			canvas.add(periodShape);
 		}
 	}

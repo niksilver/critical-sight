@@ -41,11 +41,18 @@ CriticalSight.PeriodMaker = function(sizer) {
 	var taskFillColour = 'rgb(128,128,255)';
 	var taskStrokeWidth = 2;
 	
+	var bufferStrokeColour = 'rgb(64,64,64)';
+	var bufferFillColour = 'rgb(192,192,192)';
+	var bufferStrokeWidth = 2;
+	
 	/**
 	 * A shape for a period (depends if it's zero-length or not).
+	 * `type` should be "task" or "buffer"
 	 */
-	this.periodShape = function(idx, start, duration) {
-		if (duration === 0 ) {
+	this.periodShape = function(type, idx, start, duration) {
+		if (type == "buffer") {
+			return this.bufferRect(idx, start, duration);
+		} else if (duration === 0 ) {
 			return this.taskDiamond(idx, start);
 		} else {
 			return this.taskRect(idx, start, duration);
@@ -90,6 +97,23 @@ CriticalSight.PeriodMaker = function(sizer) {
 			height : sizer.height,
 			width : sizer.width(duration),
 			fill : taskFillColour
+		});
+	};
+	
+	/**
+	 * A buffer
+	 */
+	this.bufferRect = function(idx, start, duration) {
+		return new fabric.Rect({
+			originX : 'left',
+			originY : 'top',
+			stroke: bufferStrokeColour,
+			strokeWidth: bufferStrokeWidth,
+			left : sizer.left(start),
+			top : sizer.top(idx),
+			height : sizer.height,
+			width : sizer.width(duration),
+			fill : bufferFillColour
 		});
 	};
 };
