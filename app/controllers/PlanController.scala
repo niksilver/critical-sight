@@ -16,7 +16,7 @@ trait PlanController {
     val t2 = Task('t2, "Do what's on the list", 5.0, None)
     val t3 = Task('t3)
     val p = new Plan {
-      val tasks = Set(t0, t1, t2, t3)
+      val tasks = Seq(t0, t1, t2, t3)
       val dependencies = Set(t0 -> t1, t1 -> t2, t2 -> t3)
     }
     Ok(jsonPlan(p))
@@ -44,7 +44,7 @@ trait PlanController {
         case cp: CompletionBuffer => cpWrites.writes(cp)
       }
     }
-    val periods = Set[Period]() ++ p.tasks ++ p.completionBufferOption
+    val periods = Seq[Period]() ++ p.tasks ++ p.completionBufferOption
     val deps = p.dependencies.toSeq map { tPair => Seq(tPair._1.id.name, tPair._2.id.name) }
     Json.obj(
         "periods" -> Json.toJson(periods),

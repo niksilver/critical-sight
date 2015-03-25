@@ -45,7 +45,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
     propertyMap(json, "duration", Reads.DoubleReads)
   }
 
-  "PlanController.plan" must {
+  "PlanController.jsonPlan" must {
     
     "be able to generate a one-task plan - id only (1)" in {
       val p = new ScriptedPlan {
@@ -142,6 +142,20 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       starts.size must equal (4) // Includes completion buffer
       (starts("t2") + 22) must equal (starts("t4"))
       (starts("t4") + 44) must equal (starts("t6"))
+    }
+    
+    "return the tasks in order, if they were given in order" in {
+      val strIds = (0 to 99) map { "t" + _ }
+      val ts = strIds map { s => Task(Symbol(s)) }
+      val p = new Plan {
+        val tasks = ts
+        val dependencies = Set[(Task,Task)]()
+      }
+      val app = new TestPlanController
+      val json = app.jsonPlan(p)
+      val types = typesMap(json)
+      val jsonTaskIds = ids(json) filter ( types(_) == "task" )
+      jsonTaskIds must contain theSameElementsInOrderAs (strIds)
     }
     
     "work out start times from the buffered schedule" in {
