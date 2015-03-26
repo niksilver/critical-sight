@@ -219,4 +219,24 @@ describe("Plan", function() {
 					new CS.BadlyDefinedObjectError("Dependency 2 needs two elements, found 1"));
 		});
 	});
+	
+	describe("dependencies", function() {
+	    it("should give empty array if no dependenceis", function() {
+            var t0 = { id: 't0', start: 1.0, duration: 3.0 };
+            var t1 = { id: 't1', start: 3.0, duration: 2.0 };
+            var spec = { periods: [t0, t1], dependencies: [] };
+            var p = new CS.Plan(spec);
+            expect( p.dependencies ).toEqual( [] );
+	    });
+	    
+	    it("should give a single dependency pair if there is just one dependency", function() {
+            var t0 = { id: 't0', start: 1.0, duration: 2.0 };
+            var t1 = { id: 't1', start: 3.0, duration: 3.0 };
+            var spec = { periods: [t0, t1], dependencies: [["t0", "t1"]] };
+            var p = new CS.Plan(spec);
+            
+            expect( p.dependencies.length ).toEqual ( 1 );
+            expect( p.dependencies[0] ).toEqual( [t0,t1] );
+	    });
+	});
 });

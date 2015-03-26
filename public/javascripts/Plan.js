@@ -80,4 +80,12 @@ CriticalSight.Plan = function(spec) {
 		}
 	});
 	this.dependencyIDs = spec.dependencies || [];
+	
+	/**
+	 * An array of dependencies. Each element is a 2-ary array, of which we
+	 * have the "from" period and the "to" period.
+	 */
+	this.dependencies = this.dependencyIDs.map(function (curr, idx, arr) {
+	    return [ self.period(curr[0]), self.period(curr[1]) ]
+	});
 };
