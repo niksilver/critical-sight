@@ -22,7 +22,7 @@ describe("Plan", function() {
 		});
 	});
 	
-	describe("taskList", function() {
+	describe("periodList", function() {
 		
 		it("should contain the 0th task given a non-empty spec", function() {
 			var spec = { periods: [{ id: 't0', start: 1.0, duration: 1.0 }] };
@@ -235,8 +235,23 @@ describe("Plan", function() {
             var spec = { periods: [t0, t1], dependencies: [["t0", "t1"]] };
             var p = new CS.Plan(spec);
             
-            expect( p.dependencies.length ).toEqual ( 1 );
+            expect( p.dependencies.length ).toEqual( 1 );
             expect( p.dependencies[0] ).toEqual( [t0,t1] );
 	    });
+	    
+//	    it("should include a dependency between the last task and the completion buffer", function() {
+//            var t0 = { id: 't0', start: 1.0, duration: 2.0 };
+//            var t1 = { id: 't1', start: 3.0, duration: 3.0 };
+//            var spec = { periods: [t0, t1], dependencies: [["t0", "t1"]] };
+//            var p = new CS.Plan(spec);
+//            
+//            // Get a dependency pair where the first task is t1
+//            
+//            var buffDeps = p.dependencies.filter(function(curr, idx, arr) {
+//                return (curr[0] == t1); });
+//            
+//            expect( buffDeps.length ).toEqual( 1 );
+//            expect( buffDeps[0][1].type ).toEqual( "buffer" );
+//	    });
 	});
 });

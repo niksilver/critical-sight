@@ -86,6 +86,6 @@ CriticalSight.Plan = function(spec) {
 	 * have the "from" period and the "to" period.
 	 */
 	this.dependencies = this.dependencyIDs.map(function (curr, idx, arr) {
-	    return [ self.period(curr[0]), self.period(curr[1]) ]
+	    return [ self.period(curr[0]), self.period(curr[1]) ];
 	});
 };
