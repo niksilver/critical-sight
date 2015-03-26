@@ -22,7 +22,7 @@ unmanagedJars in Compile += ( baseDirectory.value / "target/scala-2.11/classes" 
 //
 libraryDependencies ++= Seq(
     jdbc,
-    anorm
+    anorm,
     cache
 )
 
