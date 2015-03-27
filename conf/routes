@@ -1,6 +1,7 @@
 GET  /                controllers.Application.index
 GET  /demo.html       controllers.Assets.at(path = "/public/html", file = "demo.html")
 GET  /public/javascripts/:filename  controllers.Application.javascript(filename)
+GET  /public/lib/:filename          controllers.Application.lib(filename)
 GET  /public/images/:filename       controllers.Application.image(filename)
 
 GET  /sample          controllers.PlanController.sample

@@ -22,6 +22,10 @@ trait Application {
   def javascript(filename: String) = {
     controllers.Assets.at(path = "/public/javascripts", file = filename)
   }
+
+  def lib(filename: String) = {
+    controllers.Assets.at(path = "/public/lib", file = filename)
+  }
 }
 
 object Application extends Application with Controller

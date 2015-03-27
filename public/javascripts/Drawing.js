@@ -47,7 +47,8 @@ CriticalSight.PeriodMaker = function(sizer) {
 	
 	/**
 	 * A shape for a period (depends if it's zero-length or not).
-	 * `type` should be "task" or "buffer"
+	 * `type` should be "task" or "buffer".
+	 * `idx` is the row index on the chart.
 	 */
 	this.periodShape = function(type, idx, start, duration) {
 		if (type == "buffer") {
@@ -72,8 +73,8 @@ CriticalSight.PeriodMaker = function(sizer) {
 			' l ' + -halfWidth + ',' + -halfHeight +
 			' Z';
 		var diamond = new fabric.Path( outline, {
-			originX: 0, // To fix positioning bug
-			originY: 0, // To fix positioning bug
+			originX: 'center', // To fix positioning bug
+			originY: 'top', // To fix positioning bug
 			left : sizer.left(start),
 			top : sizer.top(idx),
 			fill: taskFillColour,
@@ -116,4 +117,34 @@ CriticalSight.PeriodMaker = function(sizer) {
 			fill : bufferFillColour
 		});
 	};
+};
+
+CriticalSight.DependencyMaker = function(sizer) {
+    'use strict';
+    
+    this.sizer = sizer;
+    
+    /**
+     * A graphical object for a dependency link between
+     * two graphical objects.
+     */
+    this.dependency = function(fromElt, toElt) {
+        fromElt = fromElt.getBoundingRect();
+        toElt = toElt.getBoundingRect();
+        var startX = fromElt.left + fromElt.width;
+        var startY = fromElt.top + fromElt.height/2;
+        var width = toElt.left - startX;
+        var height = toElt.top - startY;
+        var path =
+            'M 0,0' +
+            ' l ' + width + ',' + height;
+        var obj = new fabric.Path( path, {
+            originX: 0, // To fix positioning bug
+            originY: 0, // To fix positioning bug
+            left : startX,
+            top : startY,
+            stroke: 'rgb(0,0,0)'
+        });
+        return obj;
+    };
 };
