@@ -51,9 +51,9 @@ CriticalSight.PeriodMaker = function(sizer) {
 	 * `idx` is the row index on the chart.
 	 */
 	this.periodShape = function(type, idx, start, duration) {
-		if (type == "buffer") {
+		if (false && /******************/ type == "buffer") {
 			return this.bufferRect(idx, start, duration);
-		} else if (duration === 0 ) {
+		} else if (false && /***************/ duration === 0 ) {
 			return this.taskDiamond(idx, start);
 		} else {
 			return this.taskRect(idx, start, duration);
@@ -88,17 +88,27 @@ CriticalSight.PeriodMaker = function(sizer) {
 	 * A rectangular task.
 	 */
 	this.taskRect = function(idx, start, duration) {
-		return new fabric.Rect({
-			originX : 'left',
-			originY : 'top',
-			stroke: taskStrokeColour,
-			strokeWidth: taskStrokeWidth,
-			left : sizer.left(start),
-			top : sizer.top(idx),
-			height : sizer.height,
-			width : sizer.width(duration),
-			fill : taskFillColour
-		});
+	    var rect = new createjs.Shape();
+	    rect.graphics.beginFill(taskFillColour).
+	        beginStroke(taskStrokeColour).
+	        setStrokeStyle(taskStrokeWidth).
+	        drawRect(
+	            sizer.left(start),
+	            sizer.top(idx),
+	            sizer.width(duration),
+                sizer.height);
+	    return rect;
+//		return new fabric.Rect({
+//			originX : 'left',
+//			originY : 'top',
+//			stroke: taskStrokeColour,
+//			strokeWidth: taskStrokeWidth,
+//			left : sizer.left(start),
+//			top : sizer.top(idx),
+//			height : sizer.height,
+//			width : sizer.width(duration),
+//			fill : taskFillColour
+//		});
 	};
 	
 	/**
