@@ -1,8 +1,9 @@
-xdescribe("DependencyMaker", function() {
+describe("DependencyMaker", function() {
+    'use strict';
 	
 	var CS = CriticalSight;
 	
-	   describe("dependency", function() {
+	describe("dependency", function() {
 		
 		it("should give a shape within bounds for two tasks in direct sequence", function() {
 			var p = new CS.Plan({
@@ -27,18 +28,18 @@ xdescribe("DependencyMaker", function() {
             var depMaker = new CS.DependencyMaker(sizer);
 			var graphicDep = depMaker.dependency( t1Rect, t2Rect );
 			
-			var depRect = graphicDep.getBoundingRect();
-            //console.log("t1Rect.top = " + t1Rect.top);
-            //console.log("t1Rect.height = " + t1Rect.height);
+			var depRect = graphicDep.getBounds();
+            t1Rect = t1Rect.getBounds();
+            t2Rect = t2Rect.getBounds();
 			// Top
-            expect( depRect.top                  ).toEqual( t1Rect.top + (t1Rect.height / 2) );
+            expect( depRect.y                  ).toEqual( t1Rect.y + (t1Rect.height / 2) );
             // Bottom
-            expect( depRect.top + depRect.height ).toEqual( t2Rect.top );
+            expect( depRect.y + depRect.height ).toEqual( t2Rect.y );
             // Left
-            expect( depRect.left                 ).toEqual( t1Rect.left + t1Rect.width );
+            expect( depRect.x                  ).toEqual( t2Rect.x );
             // Right
-            expect( depRect.left + depRect.width ).toBeGreaterThan( t2Rect.left );
-            expect( depRect.left + depRect.width ).toBeLessThan( t2Rect.left + unitWidth/4 );
+            expect( depRect.x + depRect.width >= t2Rect.x ).toBeTruthy();
+            expect( depRect.x + depRect.width ).toBeLessThan( t2Rect.x + unitWidth/4 );
 		});
 	});
 });

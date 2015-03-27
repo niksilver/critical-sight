@@ -51,9 +51,9 @@ CriticalSight.PeriodMaker = function(sizer) {
 	 * `idx` is the row index on the chart.
 	 */
 	this.periodShape = function(type, idx, start, duration) {
-		if (false && /******************/ type == "buffer") {
+		if (type == "buffer") {
 			return this.bufferRect(idx, start, duration);
-		} else if (false && /***************/ duration === 0 ) {
+		} else if (duration === 0 ) {
 			return this.taskDiamond(idx, start);
 		} else {
 			return this.taskRect(idx, start, duration);
@@ -64,24 +64,23 @@ CriticalSight.PeriodMaker = function(sizer) {
 	 * A diamond-shaped task, if zero-duration.
 	 */
 	this.taskDiamond = function(idx, start) {
-		var halfHeight = sizer.height / 2;
-		var halfWidth = halfHeight;
-		var outline =
-			'M ' + '0,0' +
-			' l ' +  halfWidth + ',' +  halfHeight +
-			' l ' + -halfWidth + ',' +  halfHeight +
-			' l ' + -halfWidth + ',' + -halfHeight +
-			' Z';
-		var diamond = new fabric.Path( outline, {
-			originX: 'center', // To fix positioning bug
-			originY: 'top', // To fix positioning bug
-			left : sizer.left(start),
-			top : sizer.top(idx),
-			fill: taskFillColour,
-			stroke: taskStrokeColour,
-			strokeWidth: taskStrokeWidth
-		});
-		return diamond;
+	    var startX = sizer.left(start);
+	    var startY = sizer.top(idx);
+        var halfHeight = sizer.height / 2;
+        var halfWidth = halfHeight;
+
+        var diamond = new createjs.Shape();
+	    diamond.graphics.beginFill(taskFillColour).
+	        beginStroke(taskStrokeColour).
+	        setStrokeStyle(taskStrokeWidth).
+	        moveTo(startX, startY).
+	        lineTo(startX + halfWidth, startY + halfHeight).
+	        lineTo(startX, startY + 2*halfHeight).
+	        lineTo(startX - halfWidth, startY + halfHeight).
+	        closePath();
+	    CriticalSight.Util.setBounds(diamond,
+	            [startX - halfWidth], [startY], [2*halfWidth], [2*halfHeight]);
+	    return diamond;
 	};
 	
 	/**
@@ -97,35 +96,25 @@ CriticalSight.PeriodMaker = function(sizer) {
 	            sizer.top(idx),
 	            sizer.width(duration),
                 sizer.height);
+	    CriticalSight.Util.setBounds(rect, [sizer.left(start)], [sizer.top(idx)], [sizer.width(duration)], [sizer.height]);
 	    return rect;
-//		return new fabric.Rect({
-//			originX : 'left',
-//			originY : 'top',
-//			stroke: taskStrokeColour,
-//			strokeWidth: taskStrokeWidth,
-//			left : sizer.left(start),
-//			top : sizer.top(idx),
-//			height : sizer.height,
-//			width : sizer.width(duration),
-//			fill : taskFillColour
-//		});
 	};
 	
 	/**
 	 * A buffer
 	 */
 	this.bufferRect = function(idx, start, duration) {
-		return new fabric.Rect({
-			originX : 'left',
-			originY : 'top',
-			stroke: bufferStrokeColour,
-			strokeWidth: bufferStrokeWidth,
-			left : sizer.left(start),
-			top : sizer.top(idx),
-			height : sizer.height,
-			width : sizer.width(duration),
-			fill : bufferFillColour
-		});
+        var rect = new createjs.Shape();
+        rect.graphics.beginFill(bufferFillColour).
+            beginStroke(bufferStrokeColour).
+            setStrokeStyle(bufferStrokeWidth).
+            drawRect(
+                sizer.left(start),
+                sizer.top(idx),
+                sizer.width(duration),
+                sizer.height);
+        CriticalSight.Util.setBounds(rect, [sizer.left(start)], [sizer.top(idx)], [sizer.width(duration)], [sizer.height]);
+        return rect;
 	};
 };
 
@@ -135,26 +124,24 @@ CriticalSight.DependencyMaker = function(sizer) {
     this.sizer = sizer;
     
     /**
-     * A graphical object for a dependency link between
+     * A shape for a dependency link between
      * two graphical objects.
      */
     this.dependency = function(fromElt, toElt) {
-        fromElt = fromElt.getBoundingRect();
-        toElt = toElt.getBoundingRect();
-        var startX = fromElt.left + fromElt.width;
-        var startY = fromElt.top + fromElt.height/2;
-        var width = toElt.left - startX;
-        var height = toElt.top - startY;
-        var path =
-            'M 0,0' +
-            ' l ' + width + ',' + height;
-        var obj = new fabric.Path( path, {
-            originX: 0, // To fix positioning bug
-            originY: 0, // To fix positioning bug
-            left : startX,
-            top : startY,
-            stroke: 'rgb(0,0,0)'
-        });
-        return obj;
+        var fromBounds = fromElt.getBounds();
+        var toBounds = toElt.getBounds();
+        var startX = fromBounds.x + fromBounds.width;
+        var startY = fromBounds.y + fromBounds.height/2;
+        var endX = toBounds.x;
+        var endY = toBounds.y;
+        
+        var arrow = new createjs.Shape();
+        arrow.graphics.beginStroke('rgb(0,0,0)'). // Line colour
+            setStrokeStyle(2). // Line width
+            moveTo(startX, startY).
+            lineTo(endX, endY);
+        CriticalSight.Util.setBounds(arrow,
+                [startX], [startY], [endX - startX], [endY - startY]);
+        return arrow;
     };
 };
