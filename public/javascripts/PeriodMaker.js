@@ -1,5 +1,8 @@
 /**
  * Tools for building a Gantt chart.
+ * 
+ * Each shape will have connector points, in a property:
+ * connector: {fromX: 99, fromY: 99, toX: 99, toY: 99}.
  */
 
 CriticalSight.PeriodMaker = function(sizer) {
@@ -50,6 +53,12 @@ CriticalSight.PeriodMaker = function(sizer) {
 	        closePath();
 	    CriticalSight.Util.setBounds(diamond,
 	            [startX - halfWidth], [startY], [2*halfWidth], [2*halfHeight]);
+	    diamond.set({ connector: {
+	        fromX: startX,
+	        fromY: startY + 2*halfHeight,
+	        toX: startX,
+	        toY: startY
+	    } });
 	    return diamond;
 	};
 	
