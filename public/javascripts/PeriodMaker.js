@@ -67,20 +67,20 @@ CriticalSight.PeriodMaker = function(sizer) {
 	 */
 	this.taskRect = function(idx, start, duration) {
 	    var rect = new createjs.Shape();
+	    var left = sizer.left(start);
+	    var top = sizer.top(idx);
+	    var width = sizer.width(duration);
+	    var height = sizer.height;
 	    rect.graphics.beginFill(taskFillColour).
 	        beginStroke(taskStrokeColour).
 	        setStrokeStyle(taskStrokeWidth).
-	        drawRect(
-	            sizer.left(start),
-	            sizer.top(idx),
-	            sizer.width(duration),
-                sizer.height);
-	    CriticalSight.Util.setBounds(rect, [sizer.left(start)], [sizer.top(idx)], [sizer.width(duration)], [sizer.height]);
+	        drawRect(left, top, width, height);
+	    CriticalSight.Util.setBounds(rect, [left], [top], [width], [height]);
 	    rect.set({ connector: {
-	            fromX: sizer.left(start) + sizer.width(duration),
-	            fromY: sizer.top(idx) + sizer.height/2,
-	            toX: sizer.left(start) + sizer.unitWidth/5,
-	            toY: sizer.top(idx)
+	            fromX: left + width,
+	            fromY: top + height/2,
+	            toX: left + sizer.unitWidth/5,
+	            toY: top
 	    }});
 	    return rect;
 	};
