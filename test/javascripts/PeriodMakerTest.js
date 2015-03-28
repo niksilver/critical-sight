@@ -13,7 +13,7 @@ describe("PeriodMaker", function() {
             var diamond = pMaker.taskDiamond(idx, start);
             
             expect( diamond.connector.fromX ).toEqual( diamond.getBounds().x + diamond.getBounds().width );
-            expect( diamond.connector.fromY ).toEqual( sizer.top(idx) + sizer.height );
+            expect( diamond.connector.fromY ).toEqual( sizer.top(idx) + sizer.height/2 );
             expect( diamond.connector.toX ).toEqual( sizer.left(start) );
             expect( diamond.connector.toY ).toEqual( sizer.top(idx) );
         });

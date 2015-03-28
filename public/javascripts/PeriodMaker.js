@@ -55,7 +55,7 @@ CriticalSight.PeriodMaker = function(sizer) {
 	            [startX - halfWidth], [startY], [2*halfWidth], [2*halfHeight]);
 	    diamond.set({ connector: {
     	        fromX: startX + halfWidth,
-    	        fromY: startY + 2*halfHeight,
+    	        fromY: startY + halfHeight,
     	        toX: startX,
     	        toY: startY
 	    }});

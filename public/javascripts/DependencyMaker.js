@@ -13,10 +13,10 @@ CriticalSight.DependencyMaker = function(sizer) {
     this.dependency = function(fromElt, toElt) {
         var fromBounds = fromElt.getBounds();
         var toBounds = toElt.getBounds();
-        var startX = fromBounds.x + fromBounds.width;
-        var startY = fromBounds.y + fromBounds.height/2;
-        var endX = toBounds.x;
-        var endY = toBounds.y;
+        var startX = fromElt.connector.fromX;
+        var startY = fromElt.connector.fromY;
+        var endX = toElt.connector.toX;
+        var endY = toElt.connector.toY;
         
         var arrow = new createjs.Shape();
         arrow.graphics.beginStroke('rgb(0,0,0)'). // Line colour
