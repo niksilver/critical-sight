@@ -54,11 +54,11 @@ CriticalSight.PeriodMaker = function(sizer) {
 	    CriticalSight.Util.setBounds(diamond,
 	            [startX - halfWidth], [startY], [2*halfWidth], [2*halfHeight]);
 	    diamond.set({ connector: {
-	        fromX: startX,
-	        fromY: startY + 2*halfHeight,
-	        toX: startX,
-	        toY: startY
-	    } });
+    	        fromX: startX + halfWidth,
+    	        fromY: startY + 2*halfHeight,
+    	        toX: startX,
+    	        toY: startY
+	    }});
 	    return diamond;
 	};
 	
@@ -76,6 +76,12 @@ CriticalSight.PeriodMaker = function(sizer) {
 	            sizer.width(duration),
                 sizer.height);
 	    CriticalSight.Util.setBounds(rect, [sizer.left(start)], [sizer.top(idx)], [sizer.width(duration)], [sizer.height]);
+	    rect.set({ connector: {
+	            fromX: sizer.left(start) + sizer.width(duration),
+	            fromY: sizer.top(idx) + sizer.height/2,
+	            toX: sizer.left(start) + sizer.unitWidth/5,
+	            toY: sizer.top(idx)
+	    }});
 	    return rect;
 	};
 	
