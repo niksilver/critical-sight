@@ -66,45 +66,33 @@ CriticalSight.PeriodMaker = function(sizer) {
 	 * A rectangular task.
 	 */
 	this.taskRect = function(idx, start, duration) {
-	    var rect = new createjs.Shape();
-	    var left = sizer.left(start);
-	    var top = sizer.top(idx);
-	    var width = sizer.width(duration);
-	    var height = sizer.height;
-	    rect.graphics.beginFill(taskFillColour).
-	        beginStroke(taskStrokeColour).
-	        setStrokeStyle(taskStrokeWidth).
-	        drawRect(left, top, width, height);
-	    CriticalSight.Util.setBounds(rect, [left], [top], [width], [height]);
-	    rect.set({ connector: {
-	            fromX: left + width,
-	            fromY: top + height/2,
-	            toX: left + sizer.unitWidth/5,
-	            toY: top
-	    }});
-	    return rect;
+	    return this._rect(idx, start, duration, taskFillColour, taskStrokeColour, taskStrokeWidth);
 	};
 	
 	/**
 	 * A buffer
 	 */
 	this.bufferRect = function(idx, start, duration) {
-        var rect = new createjs.Shape();
-        rect.graphics.beginFill(bufferFillColour).
-            beginStroke(bufferStrokeColour).
-            setStrokeStyle(bufferStrokeWidth).
-            drawRect(
-                sizer.left(start),
-                sizer.top(idx),
-                sizer.width(duration),
-                sizer.height);
-        CriticalSight.Util.setBounds(rect, [sizer.left(start)], [sizer.top(idx)], [sizer.width(duration)], [sizer.height]);
-        rect.set({ connector: {
-            fromX: sizer.left(start) + sizer.width(duration),
-            fromY: sizer.top(idx) + sizer.height/2,
-            toX: sizer.left(start) + sizer.unitWidth/5,
-            toY: sizer.top(idx)
-    }});
-        return rect;
+        return this._rect(idx, start, duration, bufferFillColour, bufferStrokeColour, bufferStrokeWidth);
 	};
+    
+    this._rect = function(idx, start, duration, fillColour, strokeColour, strokeWidth) {
+        var rect = new createjs.Shape();
+        var left = sizer.left(start);
+        var top = sizer.top(idx);
+        var width = sizer.width(duration);
+        var height = sizer.height;
+        rect.graphics.beginFill(fillColour).
+            beginStroke(strokeColour).
+            setStrokeStyle(strokeWidth).
+            drawRect(left, top, width, height);
+        CriticalSight.Util.setBounds(rect, [left], [top], [width], [height]);
+        rect.set({ connector: {
+                fromX: left + width,
+                fromY: top + height/2,
+                toX: left + sizer.unitWidth/5,
+                toY: top
+        }});
+        return rect;
+    };
 };
