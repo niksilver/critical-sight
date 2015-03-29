@@ -309,5 +309,39 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       
       idSeq must contain (fb.id.name)
     }
+    
+    "include any feeder buffer immediately after its predecessor" in {
+      val app = new TestPlanController()
+
+      //    [t1]\
+      //        +[t2]---------------\
+      //                            |
+      //    [t3  ]\                 |
+      //          +[t4  ]-----------+
+      //                            |
+      //    [t5                    ]+
+      //                            +[t6]
+      
+      val t1 = Task('t1, "Task one", 1, None)
+      val t2 = Task('t2, "Task two", 1, None)
+      val t3 = Task('t3, "Task three", 2, None)
+      val t4 = Task('t4, "Task four", 2, None)
+      val t5 = Task('t5, "Task five", 10, None)
+      val t6 = Task('t6)
+  
+      val p = new Plan {
+        val tasks = Seq(t1, t2, t3, t4, t5, t6)
+        val dependencies = Set(t1 -> t2, t2 -> t6, t3 -> t4, t4 -> t6, t5 -> t6)
+      }
+
+      val bufferT2 = (p.bufferedSchedule.feederBuffers find { _.predecessor == t2 }).get
+      val bufferT4 = (p.bufferedSchedule.feederBuffers find { _.predecessor == t4 }).get
+      
+      val json = app.jsonPlan(p)
+      val idSeq = ids(json)
+      
+      idSeq.sliding(3).toSeq must contain (Seq("t1", "t2", bufferT2.id.name))
+      idSeq.sliding(3).toSeq must contain (Seq("t3", "t4", bufferT4.id.name))
+    }
   }
 }

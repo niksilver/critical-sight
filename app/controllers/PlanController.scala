@@ -44,8 +44,7 @@ trait PlanController {
         case b: Buffer => bufferWrites.writes(b)
       }
     }
-    val periods = Seq[Period]() ++
-        p.tasks ++ p.bufferedSchedule.feederBuffers ++ p.completionBufferOption
+    val periods = p.periodsWithBuffers
     val deps = p.dependenciesWithBuffers.toSeq map { tPair => Seq(tPair._1.id.name, tPair._2.id.name) }
     Json.obj(
         "periods" -> Json.toJson(periods),
