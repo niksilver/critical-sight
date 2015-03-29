@@ -14,19 +14,26 @@ CriticalSight.DemoChart = {
 		var pMaker = new CS.PeriodMaker(sizer);
 		var dMaker = new CS.DependencyMaker(sizer);
 
-		var prevShape = null;
+		var periodShapes = {};
 		for (var i = 0; i < plan.periodList.length; i++) {
 			var period = plan.periodList[i];
+			var id = period.id;
 			var type = period.type;
 			var start = period.start;
 			var duration = period.duration;
 			var periodShape = pMaker.periodShape(type, i, start, duration);
 			stage.addChild(periodShape);
-			if (prevShape !== null) {
-			    var dep = dMaker.dependency(prevShape, periodShape);
-			    stage.addChild(dep);
-			}
-            prevShape = periodShape;
+			periodShapes[id] = periodShape;
+		}
+		
+		var deps = plan.dependencyIDs;
+		for (i = 0; i < deps.length; i++) {
+		    var fromId = deps[i][0];
+		    var toId = deps[i][1];
+		    var fromShape = periodShapes[fromId];
+		    var toShape = periodShapes[toId];
+		    var depShape = dMaker.dependency(fromShape, toShape);
+		    stage.addChild(depShape);
 		}
 		stage.update();
 	}

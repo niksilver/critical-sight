@@ -45,7 +45,7 @@ trait PlanController {
       }
     }
     val periods = Seq[Period]() ++ p.tasks ++ p.completionBufferOption
-    val deps = p.dependencies.toSeq map { tPair => Seq(tPair._1.id.name, tPair._2.id.name) }
+    val deps = p.dependenciesWithBuffers.toSeq map { tPair => Seq(tPair._1.id.name, tPair._2.id.name) }
     Json.obj(
         "periods" -> Json.toJson(periods),
         "dependencies" -> Json.toJson(deps))
