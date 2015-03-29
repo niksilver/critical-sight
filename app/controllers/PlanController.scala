@@ -14,10 +14,14 @@ trait PlanController {
     val t0 = Task('t0)
     val t1 = Task('t1, "Write a long list", 2.0, None)
     val t2 = Task('t2, "Do what's on the list", 5.0, None)
-    val t3 = Task('t3)
+    val tEnd = Task('tEnd)
+    val t4 = Task('t4, "Extra work", 2.0, None)
     val p = new Plan {
-      val tasks = Seq(t0, t1, t2, t3)
-      val dependencies = Set(t0 -> t1, t1 -> t3, t0 -> t2, t2 -> t3)
+      val tasks = Seq(t0, t1, t2, tEnd, t4)
+      val dependencies = Set(
+          t0 -> t1, t1 -> tEnd,
+          t0 -> t2, t2 -> tEnd,
+          t0 -> t4, t4 -> t1, t4 -> tEnd)
     }
     Ok(jsonPlan(p))
   }
