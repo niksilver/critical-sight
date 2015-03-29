@@ -17,7 +17,7 @@ trait PlanController {
     val t3 = Task('t3)
     val p = new Plan {
       val tasks = Seq(t0, t1, t2, t3)
-      val dependencies = Set(t0 -> t1, t1 -> t2, t2 -> t3)
+      val dependencies = Set(t0 -> t1, t1 -> t3, t0 -> t2, t2 -> t3)
     }
     Ok(jsonPlan(p))
   }
@@ -31,8 +31,8 @@ trait PlanController {
           "duration" -> t.duration,
           "start" -> sch.start(t))
     }
-    implicit val cpWrites = new Writes[CompletionBuffer] {
-      def writes(cp: CompletionBuffer) = Json.obj(
+    implicit val bufferWrites = new Writes[Buffer] {
+      def writes(cp: Buffer) = Json.obj(
           "type" -> "buffer",
           "id" -> cp.id.name,
           "start" -> sch.start(cp),
@@ -41,10 +41,11 @@ trait PlanController {
     implicit val periodWrites: Writes[Period] = new Writes[Period] {
       def writes(p: Period) = p match {
         case t: Task => taskWrites.writes(t)
-        case cp: CompletionBuffer => cpWrites.writes(cp)
+        case b: Buffer => bufferWrites.writes(b)
       }
     }
-    val periods = Seq[Period]() ++ p.tasks ++ p.completionBufferOption
+    val periods = Seq[Period]() ++
+        p.tasks ++ p.bufferedSchedule.feederBuffers ++ p.completionBufferOption
     val deps = p.dependenciesWithBuffers.toSeq map { tPair => Seq(tPair._1.id.name, tPair._2.id.name) }
     Json.obj(
         "periods" -> Json.toJson(periods),

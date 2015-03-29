@@ -169,7 +169,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val app = new TestPlanController
       val json = app.jsonPlan(p)
       val starts = startsMap(json)
-      starts.size must equal (4) // Includes completion buffer
+      starts.size must equal (5) // Includes completion buffer and feeder buffer
       (starts("t1") + 11) must be < (starts("t3"))
       (starts("t2") + 22) must equal (starts("t3"))
     }
@@ -286,6 +286,28 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       val deps = (json \ "dependencies").as[Seq[Seq[String]]]
       
       deps must contain theSameElementsAs (Seq(Seq("t0", "t1"), Seq("t1", "t2"), Seq("t2", cpName)))
+    }
+    
+    "include a feeder buffer among the periods if there is one" in {
+      val app = new TestPlanController()
+      
+      val p = new ScriptedPlan {
+        add task 't0
+        add task 't1 duration 1
+        add task 't2 duration 2
+        add task 't3
+        't0 ~> 't1 ~> 't3
+        't0 ~> 't2 ~> 't3
+      }
+      
+      p.bufferedSchedule.feederBuffers.size must equal (1)
+      
+      val fb = p.bufferedSchedule.feederBuffers.head
+      
+      val json = app.jsonPlan(p)
+      val idSeq = ids(json)
+      
+      idSeq must contain (fb.id.name)
     }
   }
 }
