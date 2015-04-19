@@ -3,7 +3,6 @@ package controllers
 import play.api.mvc.Action
 import play.api.mvc.Controller
 import org.pigsaw.ccpm._
-import play.api.libs.json.Json
 import org.pigsaw.ccpm.ScriptedPlan
 import play.api.libs.json._
 
@@ -62,9 +61,23 @@ trait PlanController {
    * Responds to a textual plan with its Json representation.
    */
   def readPlan(text: String) = Action {
+    Ok(readPlan0(text))
+  }
+  
+  private def readPlan0(text: String) = {
     val reader = new TextParsers
     val (plan, errors) = reader(text)
-    Ok(jsonPlan(plan))
+    jsonPlan(plan)
+  }
+  
+  /**
+   * The POST version of [[readPlan]], which takes the plan `text`
+   * from the request body's `text` param.
+   */
+  def readPlan = Action { implicit request =>
+    val texts = request.body.asFormUrlEncoded.get("text")
+    val text = texts.mkString
+    Ok(readPlan0(text))
   }
 }
 

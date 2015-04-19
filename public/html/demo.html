@@ -46,11 +46,14 @@
 
 		var stage = new createjs.Stage(htmlCanvas);
 
-		var uri = '/readPlan/' + encodeURI(defaultPlan);
+		var uri = '/readPlan';
 		//uri = "/sample";
-		$.getJSON(uri, "", function(spec) {
-			CS.DemoChart.run(stage, spec);
-		});
+		$.post(
+		    uri,
+		    "text=" + encodeURI(defaultPlan),
+		    function(spec) {
+			    CS.DemoChart.run(stage, spec);
+            });
 	});
 </script>
 </html>

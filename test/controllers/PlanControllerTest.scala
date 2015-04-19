@@ -13,6 +13,9 @@ import play.api.test.Helpers.contentAsString
 import play.api.test.Helpers.defaultAwaitTimeout
 import play.mvc.Http.Response
 import play.mvc.SimpleResult
+import play.api.test.Helpers
+import play.api.test.FakeHeaders
+import play.api.mvc.AnyContentAsFormUrlEncoded
 
 class PlanTest extends PlaySpec with MustMatchers with Results {
 
@@ -347,7 +350,7 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
     }
   }
   
-  "PlanController.readPlan" must {
+  "PlanController.readPlan(text)" must {
     "turn a simple textual plan into json" in {
       val text = """t0: "Begin" 0.0
         |t1: "First task" 3.0
@@ -356,6 +359,25 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
         
       val app = new TestPlanController()
       val response: Future[Result]= app.readPlan(text).apply(FakeRequest())
+      val json = Json.parse(contentAsString(response)).asInstanceOf[JsObject]
+      val taskIds = ids(json)
+      taskIds.size must equal (4) // Includes buffer
+      taskIds must contain allOf ("t0", "t1", "t2")
+    }
+  }
+  
+  "PlanController.readPlan()" must {
+    "turn the POSTed string into json" in {
+      val text = """t0: "Begin" 0.0
+        |t1: "First task" 3.0
+        |t2: "End" 0.0
+        |t0 -> t1 -> t2""".stripMargin
+        
+      val app = new TestPlanController()
+      val call = routes.PlanController.readPlan()
+      val content = new AnyContentAsFormUrlEncoded(Map("text" -> Seq(text)))
+      val fakeRequest = FakeRequest(Helpers.POST, call.url, FakeHeaders(), content)
+      val response: Future[Result]= app.readPlan.apply(fakeRequest)
       val json = Json.parse(contentAsString(response)).asInstanceOf[JsObject]
       val taskIds = ids(json)
       taskIds.size must equal (4) // Includes buffer
