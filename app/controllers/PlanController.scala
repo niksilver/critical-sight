@@ -26,6 +26,9 @@ trait PlanController {
     Ok(jsonPlan(p))
   }
   
+  /**
+   * Converts a `Plan` into its Json representation.
+   */
   def jsonPlan(p: Plan): JsObject = {
     val sch = p.bufferedSchedule
     implicit val taskWrites = new Writes[Task] {
@@ -53,6 +56,15 @@ trait PlanController {
     Json.obj(
         "periods" -> Json.toJson(periods),
         "dependencies" -> Json.toJson(deps))
+  }
+  
+  /**
+   * Responds to a textual plan with its Json representation.
+   */
+  def readPlan(text: String) = Action {
+    val reader = new TextParsers
+    val (plan, errors) = reader(text)
+    Ok(jsonPlan(plan))
   }
 }
 

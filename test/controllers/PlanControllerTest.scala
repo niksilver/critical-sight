@@ -11,6 +11,8 @@ import play.api.mvc.Results
 import play.api.test.FakeRequest
 import play.api.test.Helpers.contentAsString
 import play.api.test.Helpers.defaultAwaitTimeout
+import play.mvc.Http.Response
+import play.mvc.SimpleResult
 
 class PlanTest extends PlaySpec with MustMatchers with Results {
 
@@ -342,6 +344,22 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       
       idSeq.sliding(3).toSeq must contain (Seq("t1", "t2", bufferT2.id.name))
       idSeq.sliding(3).toSeq must contain (Seq("t3", "t4", bufferT4.id.name))
+    }
+  }
+  
+  "PlanController.readPlan" must {
+    "turn a simple textual plan into json" in {
+      val text = """t0: "Begin" 0.0
+        |t1: "First task" 3.0
+        |t2: "End" 0.0
+        |t0 -> t1 -> t2""".stripMargin
+        
+      val app = new TestPlanController()
+      val response: Future[Result]= app.readPlan(text).apply(FakeRequest())
+      val json = Json.parse(contentAsString(response)).asInstanceOf[JsObject]
+      val taskIds = ids(json)
+      taskIds.size must equal (4) // Includes buffer
+      taskIds must contain allOf ("t0", "t1", "t2")
     }
   }
 }
