@@ -13,6 +13,11 @@
 <body>
 
 	<canvas id="c" style="border: 1px solid black;"></canvas>
+	
+	<form action="#" method="POST">
+	<textarea id="plantext" name="text" rows="10" cols="60"></textarea>
+	<span id="submit">Go!</span>
+	</form>
 
 </body>
 
@@ -38,6 +43,8 @@
 	    't0 -> t4 -> t1\n' +
 	    't4 -> tEnd\n';
 	
+	$("#plantext").val(defaultPlan);
+	
 	$(function() {
 
 		var htmlCanvas = document.getElementById('c');
@@ -47,13 +54,23 @@
 		var stage = new createjs.Stage(htmlCanvas);
 
 		var uri = '/readPlan';
-		//uri = "/sample";
 		$.post(
 		    uri,
 		    "text=" + encodeURI(defaultPlan),
 		    function(spec) {
 			    CS.DemoChart.run(stage, spec);
             });
+
+		$("#submit").click(function() {
+		    var text = $("#plantext").val();
+		    stage.removeAllChildren();
+		    stage.update();
+			$.post('/readPlan',
+				    "text=" + encodeURI(text),
+				    function(spec) {
+					    CS.DemoChart.run(stage, spec);
+		            });
+		});
 	});
 </script>
 </html>
