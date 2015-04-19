@@ -5,3 +5,4 @@ GET  /public/lib/:filename          controllers.Application.lib(filename)
 GET  /public/images/:filename       controllers.Application.image(filename)
 
 GET  /sample          controllers.PlanController.sample
+GET  /readPlan/:text  controllers.PlanController.readPlan(text)

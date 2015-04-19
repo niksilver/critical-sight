@@ -27,6 +27,17 @@
 <script>
 	var CS = CriticalSight;
 	
+	var defaultPlan =
+	    't0: "Start"\n' +
+	    't1: "Write a long list" 2.0\n' +
+	    't2: "Do what\'s on the list" 5.0\n' +
+	    'tEnd: "End"\n' +
+	    't4: "Extra work" 2.0\n' +
+	    't0 -> t1 -> tEnd\n' +
+	    't0 -> t2 -> tEnd\n' +
+	    't0 -> t4 -> t1\n' +
+	    't4 -> tEnd\n';
+	
 	$(function() {
 
 		var htmlCanvas = document.getElementById('c');
@@ -35,7 +46,9 @@
 
 		var stage = new createjs.Stage(htmlCanvas);
 
-		$.getJSON('/sample', "", function(spec) {
+		var uri = '/readPlan/' + encodeURI(defaultPlan);
+		//uri = "/sample";
+		$.getJSON(uri, "", function(spec) {
 			CS.DemoChart.run(stage, spec);
 		});
 	});
