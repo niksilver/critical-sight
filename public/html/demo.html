@@ -16,7 +16,7 @@
 	
 	<form action="#" method="POST">
 	<textarea id="plantext" name="text" rows="10" cols="60"></textarea>
-	<span id="submit">Go!</span>
+	<span id="submit-plan">Go!</span>
 	</form>
 
 </body>
@@ -54,22 +54,13 @@
 		var stage = new createjs.Stage(htmlCanvas);
 
 		var uri = '/readPlan';
-		$.post(
-		    uri,
-		    "text=" + encodeURI(defaultPlan),
-		    function(spec) {
-			    CS.DemoChart.run(stage, spec);
-            });
+		CS.Chart.showByText(stage, defaultPlan);
 
-		$("#submit").click(function() {
-		    var text = $("#plantext").val();
+		$("#submit-plan").click(function() {
 		    stage.removeAllChildren();
 		    stage.update();
-			$.post('/readPlan',
-				    "text=" + encodeURI(text),
-				    function(spec) {
-					    CS.DemoChart.run(stage, spec);
-		            });
+		    var text = $("#plantext").val();
+		    CS.Chart.showByText(stage, text);
 		});
 	});
 </script>

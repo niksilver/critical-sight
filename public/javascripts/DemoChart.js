@@ -2,8 +2,12 @@
  * Demo of a Gantt chart
  */
 
-CriticalSight.DemoChart = {
-	"run" : function(stage, spec) {
+CriticalSight.Chart = {
+        
+    /**
+     * Show the chart defined by the Json `spec` on the specified `stage`.
+     */
+	"show" : function(stage, spec) {
 		
 		var CS = CriticalSight;
 
@@ -36,5 +40,17 @@ CriticalSight.DemoChart = {
 		    stage.addChild(depShape);
 		}
 		stage.update();
+	},
+	
+	/**
+	 * Show the chart defined by the text description, on the specified `stage
+	 */
+	"showByText" : function(stage, text) {
+        $.post('/readPlan',
+                "text=" + encodeURI(text),
+                function(spec) {
+                    CS.Chart.show(stage, spec);
+                });
+
 	}
 };
