@@ -11,9 +11,24 @@
 
 <style>
 #chart {
-	overflow: auto;
+	display: flex;
+	flex-direction: row;
 	height: 200px;
 	margin-bottom: 20px;
+}
+
+#chart-text {
+	width: 20%;
+	overflow: hidden;
+}
+
+#chart-text-inner {
+	margin-top: -27px;
+}
+
+#chart-bars {
+	overflow: auto;
+	height: 200px;
 }
 </style>
 
@@ -21,7 +36,15 @@
 <body>
 
 <div id="chart">
-	<canvas id="c" style="border: 1px solid black;"></canvas>
+	<div id="chart-text">
+		<div id="chart-text-inner">
+			CSS is one of the core languages of the open web and has a standardized W3C specification. Developed in levels, CSS1 is now obsolete, CSS2.1 is a recommendation, and CSS3, now split into smaller modules, is progressing on the standardization track.
+			Gecko's support of flexible boxes has been adapted to match a recent specification clarification: from Firefox 23 ::before and ::after will be flex items, and as such can be repositioned using order and align-self. (May 3rd, 2013)
+		</div>
+	</div>
+	<div id="chart-bars">
+		<canvas id="chart-bars-canvas" style="border: 1px solid black;"></canvas>
+	</div>
 </div>
 
 <form action="#" method="POST">
@@ -57,7 +80,7 @@
 	
 	$(function() {
 
-		var htmlCanvas = document.getElementById('c');
+		var htmlCanvas = document.getElementById('chart-bars-canvas');
 		htmlCanvas.width = 1000;
 		htmlCanvas.height = 500;
 
