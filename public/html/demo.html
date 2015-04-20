@@ -95,6 +95,13 @@
 		    var text = $("#plantext").val();
 		    CS.Chart.showByText(stage, text);
 		});
+		
+		// Respond to the bars div scrolling
+		$("#chart-bars").scroll(function(data) {
+		    var top = $("#chart-bars").scrollTop();
+		    var marginTop = ""+(-1 * top)+"px";
+		    $("#chart-text-inner").css("margin-top", marginTop);
+		});
 	});
 </script>
 </html>
