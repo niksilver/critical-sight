@@ -14,11 +14,19 @@ CriticalSight.Sizer = function(plan, unitWidth, unitHeight) {
         throw new Error("Expected first argument (plan) to be an object, but it wasn't");
     
     var planStart = plan.start;
+    var periodCount = plan.periodList.length;
+
+    this.unitHeight = unitHeight;
+    this.unitWidth = unitWidth;
     
     this.topPadding = unitHeight * 0.5;
-    this.unitHeight = unitHeight;
     this.midPadding = unitHeight * 0.5;
-    this.unitWidth = unitWidth;
+    this.bottomPadding = unitHeight * 0.5;
+    
+    this.chartHeight = this.topPadding +
+            (periodCount-1) * this.midPadding +
+            this.bottomPadding +
+            periodCount * this.unitHeight;
 
     /**
      * Top of a task rectangle, where the task is index `idx`.

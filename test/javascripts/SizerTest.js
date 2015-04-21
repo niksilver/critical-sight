@@ -41,4 +41,16 @@ describe("Sizer", function() {
     		expect( left35 ).toEqual( left0 );
     	});
 	});
+	
+	describe("chartHeight", function() {
+	    it("should calculate the chart height correctly for several tasks", function() {
+	        var plan = CS.TestPlans.dummyPlan(5, 999);
+	        var s = new CS.Sizer(plan, 888, 11);
+	        
+	        var totalBars = 5 * 11;
+	        var totalPadding = s.topPadding + (5-1)*s.midPadding + s.bottomPadding;
+	        
+	        expect( s.chartHeight ).toEqual( totalBars +totalPadding );
+	    });
+	});
 });
