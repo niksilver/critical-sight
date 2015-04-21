@@ -21,6 +21,8 @@ CriticalSight.Chart = {
 		var sizer = new CS.Sizer(plan, htmlCanvasWidth / plan.duration, 20);
 		var pMaker = new CS.PeriodMaker(sizer);
 		var dMaker = new CS.DependencyMaker(sizer);
+		
+		stage.canvas.height = sizer.chartHeight;
 
 		var periodShapes = {};
 		for (var i = 0; i < plan.periodList.length; i++) {
