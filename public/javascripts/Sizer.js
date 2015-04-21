@@ -1,10 +1,19 @@
 /**
- * Calculator for sizing periods.
+ * Calculator for sizing graphical objects.
  * @param planStart   The time at which the plan starts (the earliest possible time)
  */
 
-CriticalSight.Sizer = function(planStart, unitWidth, unitHeight) {
+CriticalSight.Sizer = function(plan, unitWidth, unitHeight) {
     'use strict';
+    
+    var CS = CriticalSight;
+    
+    if (arguments.length !== 3)
+        throw new Error("Expected 3 arguments, but got " + arguments.length);
+    if (!(plan instanceof CS.Plan))
+        throw new Error("Expected first argument (plan) to be an object, but it wasn't");
+    
+    var planStart = plan.start;
     
     this.topPadding = unitHeight * 0.5;
     this.unitHeight = unitHeight;

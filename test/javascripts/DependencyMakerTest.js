@@ -21,7 +21,7 @@ describe("DependencyMaker", function() {
 			});
 			
 			var unitWidth = 50;
-			var sizer = new CS.Sizer(0, unitWidth, 10);
+			var sizer = new CS.Sizer(p, unitWidth, 10);
 			var perMaker = new CS.PeriodMaker(sizer);
             var t1Rect = perMaker.taskRect(0, 0, 1);
             var t2Rect = perMaker.taskRect(1, 1, 1);

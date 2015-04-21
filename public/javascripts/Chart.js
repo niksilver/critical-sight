@@ -18,7 +18,7 @@ CriticalSight.Chart = {
 		var plan = new CS.Plan(spec);
 		
 		var htmlCanvasWidth = stage.canvas.width;
-		var sizer = new CS.Sizer(plan.start,htmlCanvasWidth / plan.duration, 20);
+		var sizer = new CS.Sizer(plan, htmlCanvasWidth / plan.duration, 20);
 		var pMaker = new CS.PeriodMaker(sizer);
 		var dMaker = new CS.DependencyMaker(sizer);
 

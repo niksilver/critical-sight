@@ -5,7 +5,8 @@ describe("PeriodMaker", function() {
     
     describe("taskDiamond", function() {
         it("should add a connector point correctly", function() {
-            var sizer = new CS.Sizer(55, 50, 10);
+            var plan = CS.TestPlans.dummyPlan(44, 55);
+            var sizer = new CS.Sizer(plan, 50, 10);
             var pMaker = new CS.PeriodMaker(sizer);
             
             var idx = 3;
@@ -21,7 +22,8 @@ describe("PeriodMaker", function() {
     
     describe("taskRect", function() {
         it("should add a connector point correctly", function() {
-            var sizer = new CS.Sizer(55, 50, 10);
+            var plan = CS.TestPlans.dummyPlan(44, 55);
+            var sizer = new CS.Sizer(plan, 50, 10);
             var pMaker = new CS.PeriodMaker(sizer);
             
             var idx = 3;
@@ -38,7 +40,8 @@ describe("PeriodMaker", function() {
     
     describe("bufferRect", function() {
         it("should add a connector point correctly", function() {
-            var sizer = new CS.Sizer(55, 50, 10);
+            var plan = CS.TestPlans.dummyPlan(44, 55);
+            var sizer = new CS.Sizer(plan, 50, 10);
             var pMaker = new CS.PeriodMaker(sizer);
             
             var idx = 3;
