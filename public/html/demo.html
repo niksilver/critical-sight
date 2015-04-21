@@ -78,8 +78,6 @@
 	    't0 -> t4 -> t1\n' +
 	    't4 -> tEnd\n';
 	
-	$("#plantext").val(defaultPlan);
-	
 	// Do this when the page has loaded
 	
 	$(function() {
@@ -90,14 +88,20 @@
 
 		var stage = new createjs.Stage(htmlCanvas);
 
-		CS.Chart.showByText(stage, defaultPlan);
+		// Insert and render the default plan
+		
+		$("#plantext").val(defaultPlan);
+		CS.Chart.showBarsByText(stage, defaultPlan);
 
+		// Update the rendering when we change the text
+		
 		$("#submit-plan").click(function() {
 		    var text = $("#plantext").val();
-		    CS.Chart.showByText(stage, text);
+		    CS.Chart.showBarsByText(stage, text);
 		});
 		
 		// Respond to the bars div scrolling
+		
 		$("#chart-bars").scroll(function(data) {
 		    var top = $("#chart-bars").scrollTop();
 		    var marginTop = ""+(-1 * top)+"px";
