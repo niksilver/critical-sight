@@ -1,12 +1,13 @@
 /**
  * Calculator for sizing periods.
+ * @param planStart   The time at which the plan starts (the earliest possible time)
  */
 
 CriticalSight.Sizer = function(planStart, unitWidth, unitHeight) {
     'use strict';
     
     this.topPadding = unitHeight * 0.5;
-    this.height = unitHeight;
+    this.unitHeight = unitHeight;
     this.midPadding = unitHeight * 0.5;
     this.unitWidth = unitWidth;
 
@@ -14,7 +15,7 @@ CriticalSight.Sizer = function(planStart, unitWidth, unitHeight) {
      * Top of a task rectangle, where the task is index `idx`.
      */
     this.top = function(idx) {
-        return (this.height + this.midPadding) * idx + this.topPadding;
+        return (this.unitHeight + this.midPadding) * idx + this.topPadding;
     };
 
     /**

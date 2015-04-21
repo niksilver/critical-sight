@@ -39,7 +39,7 @@ CriticalSight.PeriodMaker = function(sizer) {
 	this.taskDiamond = function(idx, start) {
 	    var startX = sizer.left(start);
 	    var startY = sizer.top(idx);
-        var halfHeight = sizer.height / 2;
+        var halfHeight = sizer.unitHeight / 2;
         var halfWidth = halfHeight;
 
         var diamond = new createjs.Shape();
@@ -81,7 +81,7 @@ CriticalSight.PeriodMaker = function(sizer) {
         var left = sizer.left(start);
         var top = sizer.top(idx);
         var width = sizer.width(duration);
-        var height = sizer.height;
+        var height = sizer.unitHeight;
         rect.graphics.beginFill(fillColour).
             beginStroke(strokeColour).
             setStrokeStyle(strokeWidth).
