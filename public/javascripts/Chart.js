@@ -10,6 +10,10 @@ CriticalSight.Chart = {
 	"show" : function(stage, spec) {
 		
 		var CS = CriticalSight;
+		
+		// Clear any old elements from the last version of the chart.
+        stage.removeAllChildren();
+        stage.update();
 
 		var plan = new CS.Plan(spec);
 		

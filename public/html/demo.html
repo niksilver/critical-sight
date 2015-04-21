@@ -80,6 +80,8 @@
 	
 	$("#plantext").val(defaultPlan);
 	
+	// Do this when the page has loaded
+	
 	$(function() {
 
 		var htmlCanvas = document.getElementById('chart-bars-canvas');
@@ -88,12 +90,9 @@
 
 		var stage = new createjs.Stage(htmlCanvas);
 
-		var uri = '/readPlan';
 		CS.Chart.showByText(stage, defaultPlan);
 
 		$("#submit-plan").click(function() {
-		    stage.removeAllChildren();
-		    stage.update();
 		    var text = $("#plantext").val();
 		    CS.Chart.showByText(stage, text);
 		});
