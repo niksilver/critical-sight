@@ -16,6 +16,19 @@ CriticalSight.Util = {
 				throw new CriticalSight.BadlyDefinedObjectError(msg);
 			}
 		});
+	},
+	
+	/**
+	 * Set the bounds of a shape. We give a list of left coords,
+	 * top coords (and it picks the smallest of each), widths
+	 * and heights (and it picks the greatest of each).
+	 */
+	setBounds: function(shape, lefts, tops, widths, heights) {
+	    shape.setBounds(
+	            Math.min.apply(this, lefts),
+	            Math.min.apply(this, tops),
+	            Math.max.apply(this, widths),
+	            Math.max.apply(this, heights));
 	}
 };
 

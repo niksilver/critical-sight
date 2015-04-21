@@ -14,8 +14,11 @@ module.exports = function(config) {
 
 
     // list of files / patterns to load in the browser
+    // It's important to put these in dependency order
     files: [
+      'public/javascripts/CriticalSight.js',
       'public/javascripts/**/*.js',
+      'public/lib/**/*.js',
       'test/javascripts/**/*.js'
     ],
 
@@ -34,9 +37,10 @@ module.exports = function(config) {
 
 
     // test results reporter to use
-    // possible values: 'dots', 'progress'
+    // possible defaul values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    // We're using karmer-mocha-reporter
+    reporters: ['mocha'],
 
 
     // web server port
@@ -53,13 +57,13 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
+    autoWatch: false,
 
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     // browsers: ['Chrome', 'Firefox'],
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'Firefox'],
 
 
     // Continuous Integration mode
