@@ -383,5 +383,23 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       taskIds.size must equal (4) // Includes buffer
       taskIds must contain allOf ("t0", "t1", "t2")
     }
+    
+    "handle tasks which don't appear in dependencies" in {
+      val text = """t0: "Begin" 0.0
+        |t1: "First task" 3.0
+        |t2: "End" 0.0
+        |t3: "Other 3" 3.0
+        |t4: "Other 4" 4.0
+        |t0 -> t1 -> t2""".stripMargin
+        
+      val app = new TestPlanController()
+      val call = routes.PlanController.readPlan()
+      val content = new AnyContentAsFormUrlEncoded(Map("text" -> Seq(text)))
+      val fakeRequest = FakeRequest(Helpers.POST, call.url, FakeHeaders(), content)
+      val response: Future[Result]= app.readPlan.apply(fakeRequest)
+      val json = Json.parse(contentAsString(response)).asInstanceOf[JsObject]
+      val taskIds = ids(json)
+      taskIds.size must equal (6) // Includes buffer
+    }
   }
 }
