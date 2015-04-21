@@ -14,7 +14,9 @@ module.exports = function(config) {
 
 
     // list of files / patterns to load in the browser
+    // It's important to put these in dependency order
     files: [
+      'public/javascripts/CriticalSight.js',
       'public/javascripts/**/*.js',
       'public/lib/**/*.js',
       'test/javascripts/**/*.js'
