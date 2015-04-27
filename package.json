@@ -6,13 +6,10 @@
     "url": "amazon-s3://.jgit@niksilver.git/criticalsight.git"
   },
   "devDependencies": {
-    "jasmine-core": "^2.2.0",
-    "jshint": "^2.7.0",
     "karma": "^0.12.31",
     "karma-chrome-launcher": "^0.1.8",
     "karma-firefox-launcher": "^0.1.4",
     "karma-jasmine": "^0.3.5",
-    "karma-jshint": "^0.1.0",
     "karma-jshint-preprocessor": "0.0.5",
     "karma-mocha-reporter": "^1.0.2"
   }
