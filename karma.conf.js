@@ -74,7 +74,7 @@ module.exports = function(config) {
     // http://jshint.com/docs/options/
     
     jshint: {
-    	strict: true
+        strict: true
     }
     
   });

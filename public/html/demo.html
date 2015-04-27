@@ -88,7 +88,14 @@
 
 		var stage = new createjs.Stage(htmlCanvas);
 
-		// Insert and render the default plan
+		// Lay out the chart text (testing only)
+		$("tr").each(function() {
+		    $(this).css("height", "20px");
+		    //$(this).css("margin-top", "10px");
+		    //$(this).css("margin-bottom", "0px");
+		});
+		
+		// Insert and render the default plan (chart bars)
 		
 		$("#plantext").val(defaultPlan);
 		CS.Chart.showBarsByText(stage, defaultPlan);
