@@ -5,18 +5,24 @@
 CriticalSight.Chart = {
         
     /**
-     * Show the chart defined by the Json `spec` on the specified `stage`.
+     * Show the chart bar area defined by the Json `spec` on the specified `stage`.
      */
-	"show" : function(stage, spec) {
+	"showBarsByJson" : function(stage, spec) {
 		
 		var CS = CriticalSight;
+		
+		// Clear any old elements from the last version of the chart.
+        stage.removeAllChildren();
+        stage.update();
 
 		var plan = new CS.Plan(spec);
 		
 		var htmlCanvasWidth = stage.canvas.width;
-		var sizer = new CS.Sizer(plan.start,htmlCanvasWidth / plan.duration, 20);
+		var sizer = new CS.Sizer(plan, htmlCanvasWidth / plan.duration, 20);
 		var pMaker = new CS.PeriodMaker(sizer);
 		var dMaker = new CS.DependencyMaker(sizer);
+		
+		stage.canvas.height = sizer.chartHeight;
 
 		var periodShapes = {};
 		for (var i = 0; i < plan.periodList.length; i++) {
@@ -43,13 +49,13 @@ CriticalSight.Chart = {
 	},
 	
 	/**
-	 * Show the chart defined by the text description, on the specified `stage
+	 * Show the chart bar area defined by the text description, on the specified `stage
 	 */
-	"showByText" : function(stage, text) {
+	"showBarsByText" : function(stage, text) {
         $.post('/readPlan',
                 "text=" + encodeURI(text),
                 function(spec) {
-                    CS.Chart.show(stage, spec);
+                    CS.Chart.showBarsByJson(stage, spec);
                 });
 
 	}

@@ -37,7 +37,7 @@ CriticalSight.DependencyMaker = function(sizer) {
     };
     
     this._addArrowHead = function(arrow, beginX, beginY) {
-        var headDepth = this.sizer.height/3;
+        var headDepth = this.sizer.unitHeight/3;
         var halfWidth = this.sizer.unitWidth/40;
         arrow.graphics.
             beginFill(arrowFillColour).

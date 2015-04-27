@@ -1,11 +1,15 @@
 /**
- * A collection of related tasks. The spec needs the following properties:
- * - tasks. An array of tasks (see below).
+ * A collection of related tasks. The spec looks like this:
+ * {{{
+ *     {
+ *         periods: [
+ *             { id: 't0', start: 1.0, duration: 3.0 },
+ *             { id: 't1', start: 3.0, duration: 2.0 },
+ *             { id: 't2', start: 5.0, duration: 2.0 }],
+ *         dependencies: [['t0', 't1'], ['t1', 't2']]
+ *     }
+ * }}}
  * 
- * Each task must be an object with the following properties:
- * - id. A simple string.
- * - start. A numeric.
- * - duration. A numeric.
  */
 
 CriticalSight.Plan = function(spec) {

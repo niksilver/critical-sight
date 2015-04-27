@@ -83,8 +83,8 @@ module.exports = function(config) {
     jshint: {
         options: {
     	    strict: true
-	},
-	summary: true
+	    },
+	    summary: true
     }
     
   });

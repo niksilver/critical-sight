@@ -22,10 +22,6 @@
 	overflow: hidden;
 }
 
-#chart-text-inner {
-	margin-top: -27px;
-}
-
 #chart-bars {
 	overflow: auto;
 	height: 200px;
@@ -37,19 +33,25 @@
 
 <div id="chart">
 	<div id="chart-text">
-		<div id="chart-text-inner">
-			CSS is one of the core languages of the open web and has a standardized W3C specification. Developed in levels, CSS1 is now obsolete, CSS2.1 is a recommendation, and CSS3, now split into smaller modules, is progressing on the standardization track.
-			Gecko's support of flexible boxes has been adapted to match a recent specification clarification: from Firefox 23 ::before and ::after will be flex items, and as such can be repositioned using order and align-self. (May 3rd, 2013)
-		</div>
+		<table id="chart-text-inner">
+		<tr><td>t0</td><td>Line one</td></tr>
+		<tr><td>t1</td><td>Line two</td></tr>
+		<tr><td>b1</td><td>Feeder buffer</td></tr>
+		<tr><td>t2</td><td>Long line three</td></tr>
+		<tr><td>tEnd</td><td>Line four-ish</td></tr>
+		<tr><td>t4</td><td>Line five or so</td></tr>
+		<tr><td>b1</td><td>Feeder buffer</td></tr>
+		<tr><td>b2</td><td>Completion buffer</td></tr>
+		</table>
 	</div>
 	<div id="chart-bars">
-		<canvas id="chart-bars-canvas" style="border: 1px solid black;"></canvas>
+		<canvas id="chart-bars-canvas"></canvas>
 	</div>
 </div>
 
 <form action="#" method="POST">
 <textarea id="plantext" name="text" rows="10" cols="60"></textarea>
-<span id="submit-plan">Go!</span>
+<span id="submit-plan">Go....!</span>
 </form>
 
 </body>
@@ -76,7 +78,7 @@
 	    't0 -> t4 -> t1\n' +
 	    't4 -> tEnd\n';
 	
-	$("#plantext").val(defaultPlan);
+	// Do this when the page has loaded
 	
 	$(function() {
 
@@ -86,17 +88,27 @@
 
 		var stage = new createjs.Stage(htmlCanvas);
 
-		var uri = '/readPlan';
-		CS.Chart.showByText(stage, defaultPlan);
-
+		// Lay out the chart text (testing only)
+		$("tr").each(function() {
+		    $(this).css("height", "20px");
+		    //$(this).css("margin-top", "10px");
+		    //$(this).css("margin-bottom", "0px");
+		});
+		
+		// Insert and render the default plan (chart bars)
+		
+		$("#plantext").val(defaultPlan);
+		CS.Chart.showBarsByText(stage, defaultPlan);
+		
+		// Update the rendering when we change the text
+		
 		$("#submit-plan").click(function() {
-		    stage.removeAllChildren();
-		    stage.update();
 		    var text = $("#plantext").val();
-		    CS.Chart.showByText(stage, text);
+		    CS.Chart.showBarsByText(stage, text);
 		});
 		
 		// Respond to the bars div scrolling
+		
 		$("#chart-bars").scroll(function(data) {
 		    var top = $("#chart-bars").scrollTop();
 		    var marginTop = ""+(-1 * top)+"px";
