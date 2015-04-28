@@ -22,6 +22,10 @@
 	overflow: hidden;
 }
 
+#chart-text-inner {
+    border-spacing: 0px;
+}
+
 #chart-bars {
 	overflow: auto;
 	height: 200px;
@@ -89,10 +93,12 @@
 		var stage = new createjs.Stage(htmlCanvas);
 
 		// Lay out the chart text (testing only)
-		$("tr").each(function() {
-		    $(this).css("height", "20px");
-		    //$(this).css("margin-top", "10px");
-		    //$(this).css("margin-bottom", "0px");
+		
+		$("#chart-text-inner").css("margin-top", "5px");  // Top padding - (mid-bar padding / 2)
+		$("#chart-text-inner td").each(function() {
+		    $(this).css("height", "20px");        // Bar height
+		    $(this).css("padding-top", "5px");    // Mid-bar padding / 2
+		    $(this).css("padding-bottom", "5px"); // Mid-bar padding / 2
 		});
 		
 		// Insert and render the default plan (chart bars)
