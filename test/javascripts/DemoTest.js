@@ -1,7 +1,6 @@
 /**
- * 
+ * Demo of a test that runs with require.js.
  */
-console.log("Hello from DemoTest.js");
 
 define(['mymodule'], function(mymodule) {
 	describe('Testing require.js in karma', function() {
