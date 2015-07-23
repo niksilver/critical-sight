@@ -10,12 +10,13 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'requirejs'],
 
     plugins: [
       'karma-chrome-launcher',
       'karma-firefox-launcher',
       'karma-jasmine',
+      'karma-requirejs',
       'karma-jshint-preprocessor',
       'karma-mocha-reporter'
     ],
@@ -24,15 +25,17 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     // It's important to put these in dependency order
     files: [
-      'public/javascripts/CriticalSight.js',
-      'public/javascripts/**/*.js',
-      'public/lib/**/*.js',
-      'test/javascripts/**/*.js'
+	  { pattern: 'public/javascripts/CriticalSight.js', included: false},
+	  { pattern: 'public/javascripts/**/*.js', included: false },
+      { pattern: 'public/lib/**/*.js', included: false},
+	  { pattern: 'test/javascripts/**/*.js', included: false},
+	  'test/javascripts/test-main.js'
     ],
 
 
     // list of files to exclude
     exclude: [
+	  'public/javascripts/demo.js'
     ],
 
 

@@ -1,0 +1,3 @@
+define({
+	prop: "My prop"
+});
