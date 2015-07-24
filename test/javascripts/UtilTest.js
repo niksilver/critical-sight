@@ -1,4 +1,4 @@
-define(['CriticalSight', 'easeljs'], function(CS) {
+define(['Util', 'easeljs'], function(Util) {
     describe("Util", function() {
 	    'use strict';
 	    
@@ -11,7 +11,7 @@ define(['CriticalSight', 'easeljs'], function(CS) {
 	            // Bounds should not be set initially.
 	            expect( s.getBounds() ).toBeNull();
 	            
-	            CS.Util.setBounds(s, [32], [45], [200], [100]);
+	            Util.setBounds(s, [32], [45], [200], [100]);
 	            
 	            expect( s.getBounds() ).not.toBeNull();
 	            expect( s.getBounds().x ).toEqual( 32 );
@@ -27,7 +27,7 @@ define(['CriticalSight', 'easeljs'], function(CS) {
 	            // Bounds should not be set initially.
 	            expect( s.getBounds() ).toBeNull();
 	            
-	            CS.Util.setBounds(s, [44], [55], [202], [101]);
+	            Util.setBounds(s, [44], [55], [202], [101]);
 	            
 	            expect( s.getBounds() ).not.toBeNull();
 	            expect( s.getBounds().x ).toEqual( 44 );
@@ -43,7 +43,7 @@ define(['CriticalSight', 'easeljs'], function(CS) {
 	            // Bounds should not be set initially.
 	            expect( s.getBounds() ).toBeNull();
 	            
-	            CS.Util.setBounds(s, [32, 33], [45, 46], [200, 199], [100, 99]);
+	            Util.setBounds(s, [32, 33], [45, 46], [200, 199], [100, 99]);
 	            
 	            expect( s.getBounds() ).not.toBeNull();
 	            expect( s.getBounds().x ).toEqual( 32 );
@@ -59,7 +59,7 @@ define(['CriticalSight', 'easeljs'], function(CS) {
 	            // Bounds should not be set initially.
 	            expect( s.getBounds() ).toBeNull();
 	            
-	            CS.Util.setBounds(s, [33, 32], [46, 45], [199, 200], [99, 100]);
+	            Util.setBounds(s, [33, 32], [46, 45], [199, 200], [99, 100]);
 	            
 	            expect( s.getBounds() ).not.toBeNull();
 	            expect( s.getBounds().x ).toEqual( 32 );
