@@ -2,7 +2,7 @@
  * Util functions.
  */
 
-define(function() {
+define(['Errors'], function(Errors) {
 	return {
 		/**
 		 * In array `arr` require each object to have a property `propName`
@@ -11,7 +11,7 @@ define(function() {
 		forEachRequireProperty : function(arr, propName, msg) {
 			arr.forEach(function(item) {
 				if (typeof item[propName] === 'undefined') {
-					throw new CriticalSight.BadlyDefinedObjectError(msg);
+					throw new Errors.BadlyDefinedObjectError(msg);
 				}
 			});
 		},
@@ -28,5 +28,5 @@ define(function() {
 		            Math.max.apply(this, widths),
 		            Math.max.apply(this, heights));
 		}
-	}
+	};
 });
