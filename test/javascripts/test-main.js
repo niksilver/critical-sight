@@ -3,7 +3,7 @@
 // https://github.com/kjbekkelund/karma-requirejs
 // for a complete, small, working system.
 //
-var TEST_REGEXP = /DemoTest.js|UtilTest.js|PlanTest.js|TestPlansTest.js|SizerTest.js|PeriodMakerTest.js|DependencyMakerTest.js$/i;
+var TEST_REGEXP = /Test.js$/i;
 var allTestFiles = [];
 
 // Get a list of all the test files to include
