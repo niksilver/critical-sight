@@ -1,3 +1,0 @@
-define({
-	prop: "My prop"
-});
