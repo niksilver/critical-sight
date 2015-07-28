@@ -43,22 +43,31 @@ require(['Plans', 'Chart', 'jquery', 'easeljs'], function(Plans, Chart, $, easel
 		htmlCanvas.height = 500;
 	
 		var stage = new createjs.Stage(htmlCanvas);
+
+		var layOutChartText = function() {
+			$("#chart-text").css("padding-top", "5px");  // Top padding - (mid-bar padding / 2)
+			$("#chart-text-inner td").each(function() {
+			    $(this).css("height", "20px");        // Bar height
+			    $(this).css("padding-top", "5px");    // Mid-bar padding / 2
+			    $(this).css("padding-bottom", "5px"); // Mid-bar padding / 2
+			});
+		};
 		
 		var updateChart = function() {
 		    var text = $("#plantext").val();
 		    Plans.textToPlan(text, function(plan) {
 		    	Chart.showBarsByJson(stage, plan);
+		    	plan.periodList.forEach(function(curr, idx, arr) {
+		    		var id = curr.id;
+		    		var desc = curr.description;
+		    		var tr = $('#chart-text-inner').append("<tr><td>"+id+"</td><td>"+desc+"</td></tr>");
+		    		// var td = tr.append("<td></td>").text(id);
+		    		// tr.append("<td></td>").text(desc);
+		    		layOutChartText();
+		    		console.log("id/desc = " + id + "/" + desc);
+		    	});
 		    });
-		};
-	
-		// Lay out the chart text (testing only)
-		
-		$("#chart-text").css("padding-top", "5px");  // Top padding - (mid-bar padding / 2)
-		$("#chart-text-inner td").each(function() {
-		    $(this).css("height", "20px");        // Bar height
-		    $(this).css("padding-top", "5px");    // Mid-bar padding / 2
-		    $(this).css("padding-bottom", "5px"); // Mid-bar padding / 2
-		});
+		};	
 		
 		// Insert and render the default plan (chart bars)
 		// and make sure it updates whenever we click the button
