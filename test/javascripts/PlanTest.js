@@ -58,6 +58,15 @@ define(['Plan', 'Errors'], function(Plan, Errors) {
 				expect( function(){ new Plan(spec); } ).toThrow(
 						new Errors.BadlyDefinedObjectError("Found a period without a duration"));
 			});
+			
+			it("should return descriptions if there are some", function() {
+				var spec = { periods: [
+				                       { id: 't0', start: 1.0, duration: 3.0, description: "Task zero" },
+				                       { id: 't1', start: 4.0, duration: 1.0, description: "Task one" }]};
+				var p = new Plan(spec);
+				expect( p.periodList[0].description ).toEqual( "Task zero" );
+				expect( p.periodList[1].description ).toEqual( "Task one" );
+			});
 		});
 		
 		describe("start", function() {
