@@ -44,17 +44,6 @@ define(['Plans', 'Sizer', 'PeriodMaker', 'DependencyMaker', 'jquery'],
 			    stage.addChild(depShape);
 			}
 			stage.update();
-		},
-		
-		/**
-		 * Show the chart bar area defined by the text description, on the specified `stage`
-		 */
-		"showBarsByText" : function(stage, text) {
-	        Plans.textToPlan(text,
-	                function(plan) {
-	                    self.showBarsByJson(stage, plan);
-	                });
-	
 		}
 	};
 	return self;
