@@ -87,6 +87,20 @@ class PlanTest extends PlaySpec with MustMatchers with Results {
       ids must contain allOf ("t2", "t4", "t6")
     }
     
+    "be able to generate a multi-task plan - descriptions" in {
+      val p = new ScriptedPlan {
+        add task 't7 duration 77 as "Task seven"
+        add task 't8 duration 88 as "Task eight"
+        add task 't9 duration 99 as "Task nine"
+      }
+      val app = new TestPlanController
+      val json = app.jsonPlan(p)
+      val descs = (JsPath \ "periods" \\ "description")(json) map ( _.as[String] )
+      descs must contain ("Task seven")
+      descs must contain ("Task eight")
+      descs must contain ("Task nine")
+    }
+    
     "be able to generate a multi-task plan - durations" in {
       val p = new ScriptedPlan {
         add task 't2 duration 22

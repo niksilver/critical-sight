@@ -34,6 +34,7 @@ trait PlanController {
       def writes(t: Task) = Json.obj(
           "type" -> "task",
           "id" -> t.id.name,
+          "description" -> t.description,
           "duration" -> t.duration,
           "start" -> sch.start(t))
     }

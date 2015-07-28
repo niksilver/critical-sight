@@ -22,7 +22,7 @@ require.config({
 
 });
 
-require(['Chart', 'jquery', 'easeljs'], function(Chart, $, easeljs) {
+require(['Plans', 'Chart', 'jquery', 'easeljs'], function(Plans, Chart, $, easeljs) {
 	var defaultPlan =
 	    't0: "Start"\n' +
 	    't1: "Write a long list" 2.0\n' +
@@ -43,6 +43,13 @@ require(['Chart', 'jquery', 'easeljs'], function(Chart, $, easeljs) {
 		htmlCanvas.height = 500;
 	
 		var stage = new createjs.Stage(htmlCanvas);
+		
+		var updateChart = function() {
+		    var text = $("#plantext").val();
+		    Plans.textToPlan(text, function(plan) {
+		    	Chart.showBarsByJson(stage, plan);
+		    });
+		};
 	
 		// Lay out the chart text (testing only)
 		
@@ -54,16 +61,12 @@ require(['Chart', 'jquery', 'easeljs'], function(Chart, $, easeljs) {
 		});
 		
 		// Insert and render the default plan (chart bars)
+		// and make sure it updates whenever we click the button
 		
-		$("#plantext").val(defaultPlan);
-		Chart.showBarsByText(stage, defaultPlan);
+		$("#plantext").val(defaultPlan);		
+		updateChart();
 		
-		// Update the rendering when we change the text
-		
-		$("#submit-plan").click(function() {
-		    var text = $("#plantext").val();
-		    Chart.showBarsByText(stage, text);
-		});
+		$("#submit-plan").click(updateChart);
 		
 		// Respond to the bars div scrolling
 		
