@@ -44,7 +44,7 @@ require(['Plans', 'Chart', 'jquery', 'easeljs'], function(Plans, Chart, $, easel
 	
 		var stage = new createjs.Stage(htmlCanvas);
 
-		var layOutChartText = function() {
+		var spaceOutChartText = function() {
 			$("#chart-text").css("padding-top", "5px");  // Top padding - (mid-bar padding / 2)
 			$("#chart-text-inner td").each(function() {
 			    $(this).css("height", "20px");        // Bar height
@@ -57,14 +57,12 @@ require(['Plans', 'Chart', 'jquery', 'easeljs'], function(Plans, Chart, $, easel
 		    var text = $("#plantext").val();
 		    Plans.textToPlan(text, function(plan) {
 		    	Chart.showBarsByJson(stage, plan);
+		    	$('#chart-text-inner').html("");
 		    	plan.periodList.forEach(function(curr, idx, arr) {
 		    		var id = curr.id;
 		    		var desc = curr.description;
-		    		var tr = $('#chart-text-inner').append("<tr><td>"+id+"</td><td>"+desc+"</td></tr>");
-		    		// var td = tr.append("<td></td>").text(id);
-		    		// tr.append("<td></td>").text(desc);
-		    		layOutChartText();
-		    		console.log("id/desc = " + id + "/" + desc);
+		    		$('#chart-text-inner').append($("<tr>").html($('<td>').html(id)).append($('<td>').html(desc)));
+		    		spaceOutChartText();
 		    	});
 		    });
 		};	
