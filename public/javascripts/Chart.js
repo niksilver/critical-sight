@@ -1,21 +1,19 @@
 /**
- * Demo of a Gantt chart
+ * Tools for the bar chart part of a Gantt chart
  */
 
-define(['Plan', 'Sizer', 'PeriodMaker', 'DependencyMaker', 'jquery'],
-		function(Plan, Sizer, PeriodMaker, DependencyMaker, $) {
+define(['Plans', 'Sizer', 'PeriodMaker', 'DependencyMaker', 'jquery'],
+		function(Plans, Sizer, PeriodMaker, DependencyMaker, $) {
 	var self =  {
 	        
 	    /**
-	     * Show the chart bar area defined by the Json `spec` on the specified `stage`.
+	     * Show the chart bar area defined by the given `Plan` on the specified `stage`.
 	     */
-		"showBarsByJson" : function(stage, spec) {
+		"showBarsByJson" : function(stage, plan) {
 			
 			// Clear any old elements from the last version of the chart.
 	        stage.removeAllChildren();
 	        stage.update();
-	
-			var plan = new Plan(spec);
 			
 			var htmlCanvasWidth = stage.canvas.width;
 			var sizer = new Sizer(plan, htmlCanvasWidth / plan.duration, 20);
@@ -49,13 +47,12 @@ define(['Plan', 'Sizer', 'PeriodMaker', 'DependencyMaker', 'jquery'],
 		},
 		
 		/**
-		 * Show the chart bar area defined by the text description, on the specified `stage
+		 * Show the chart bar area defined by the text description, on the specified `stage`
 		 */
 		"showBarsByText" : function(stage, text) {
-	        $.post('/readPlan',
-	                "text=" + encodeURI(text),
-	                function(spec) {
-	                    self.showBarsByJson(stage, spec);
+	        Plans.textToPlan(text,
+	                function(plan) {
+	                    self.showBarsByJson(stage, plan);
 	                });
 	
 		}
