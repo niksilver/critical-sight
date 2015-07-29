@@ -16,7 +16,7 @@ define(['Plan'], function(Plan) {
 		    var tasks = [];
 		    start = start || 0; 
 		    for (var i = 0; i < taskCount; i++) {
-		        tasks.push({ id: 't'+i, start: start, duration: 1 });
+		        tasks.push({ id: 't'+i, start: start, duration: 1, description: "Task "+i });
 		    }
 		    return new Plan({ periods: tasks, dependencies: [] });
 		}

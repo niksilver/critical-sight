@@ -44,6 +44,21 @@ define(['Plans', 'Sizer', 'PeriodMaker', 'DependencyMaker', 'jquery'],
 			    stage.addChild(depShape);
 			}
 			stage.update();
+		},
+		
+		/** Populate the chart text area with period descriptions from the
+		 * given plan.
+		 * @param tableSelector  CSS selector to identify the table to populate.
+		 * @param plan           The plan with the periods.
+		 */
+		populateChartText: function(tableSelector, plan) {
+	    	$(tableSelector).html("");
+	    	plan.periodList.forEach(function(curr, idx, arr) {
+	    		var id = curr.id;
+	    		var desc = curr.description;
+	    		$(tableSelector).append($("<tr>").html($('<td>').html(id)).append($('<td>').html(desc)));
+	    	});
+
 		}
 	};
 	return self;

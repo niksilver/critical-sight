@@ -57,13 +57,8 @@ require(['Plans', 'Chart', 'jquery', 'easeljs'], function(Plans, Chart, $, easel
 		    var text = $("#plantext").val();
 		    Plans.textToPlan(text, function(plan) {
 		    	Chart.showBarsByJson(stage, plan);
-		    	$('#chart-text-inner').html("");
-		    	plan.periodList.forEach(function(curr, idx, arr) {
-		    		var id = curr.id;
-		    		var desc = curr.description;
-		    		$('#chart-text-inner').append($("<tr>").html($('<td>').html(id)).append($('<td>').html(desc)));
-		    		spaceOutChartText();
-		    	});
+		    	Chart.populateChartText('#chart-text-inner', plan);
+	    		spaceOutChartText();
 		    });
 		};	
 		
